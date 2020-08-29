@@ -1,9 +1,4 @@
 <?php
-require_once 'components/header.php';
-require_once 'util.php';
-
-flashMessages();
-
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 
@@ -12,6 +7,9 @@ if (!isset($_SESSION['name'])) {
     header('Location: index.php');
     return;
 }
+
+require_once 'util.php';
+flashMessages();
 
 if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_GET['user']) {
     $salt = 'XyZzy12*_';
@@ -58,42 +56,49 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                     ':uid' => $_SESSION['user_id']
                 ));
 
-                $upload_dir = 'images/' . $row['name'];
-                if (!file_exists($upload_dir))
-                    mkdir($upload_dir);
+                // $upload_dir = 'images/' . $row['name']; // win сменить на id
 
-                $format = array('image/jpeg', 'image/gif', 'image/png', 'image/svg+xml');
-                if (!in_array($_FILES['ava']['type'], $format)) {
-                    $_SESSION['error'] = 'Wrong type';
-                    header('Location: edit.php?user=' . $_SESSION['name']);
-                    return;
-                } else {
-                    $tmp_name = $_FILES['ava']['tmp_name'];
-                    $name = $upload_dir . '/' . date('HisdmY') . basename($_FILES['ava']['name']);
-                    // basename() может предотвратить атаку на файловую систему;
-                    // может быть целесообразным дополнительно проверить имя файла
-                    // echo $name;
-                    $move = move_uploaded_file($tmp_name, $name);
-                    if ($move) {
-                        $stmt = $pdo->prepare('UPDATE Users SET avatar = :av WHERE user_id = :uid');
-                        $stmt->execute(array(
-                            ':av' => $name,
-                            ':uid' => $_SESSION['user_id']
-                        ));
+
+                $upload_dir = 'images/' . $row['user_id'];
+                if (!file_exists($upload_dir))
+                    mkdir($upload_dir, 0777, true);
+                $upload_dir .= '/avatar';
+                if (!file_exists($upload_dir))
+                    mkdir($upload_dir, 0777, true);
+
+                // $format = array('image/jpeg', 'image/gif', 'image/png', 'image/svg+xml');
+                // if (!in_array($_FILES['ava']['type'], $format)) {
+                //     $_SESSION['error'] = 'Wrong type';
+                //     header('Location: edit.php?user=' . $_SESSION['name']);
+                //     return;
+                // } else {
+                $tmp_name = $_FILES['ava']['tmp_name'];
+                $name = $upload_dir . '/' . date('HisdmY') . '_' .$row['user_id'] . '.png';
+                // basename() может предотвратить атаку на файловую систему;
+                // может быть целесообразным дополнительно проверить имя файла
+                // echo $name;
+                $move = move_uploaded_file($tmp_name, $name);
+                if ($move) {
+                    $stmt = $pdo->prepare('UPDATE Users SET avatar = :av WHERE user_id = :uid');
+                    $stmt->execute(array(
+                        ':av' => $name,
+                        ':uid' => $_SESSION['user_id']
+                    ));
+                    if (isset($row['avatar']) && $row['avatar'])
                         unlink($row['avatar']);
-                        // header('Location: edit.php?user=' . $row['name']);
-                        // header('Location: me.php?user=' . $row['name'] . '&page=1&posts');
-                    }
+                    // header('Location: edit.php?user=' . $row['name']);
+                    // header('Location: me.php?user=' . $row['name'] . '&page=1&posts');
                 }
+                // }
                 header('Location: me.php?user=' . $row['name'] . '&page=1&posts');
             }
         }
         if (isset($_POST['submit']) && $_POST['submit'] == 'Cancel')
             header('Location: me.php?user=' . $row['name'] . '&page=1&posts');
     }
-    require_once 'components/edit-view.php';
 } else
     header('Location: index.php');
 
-
+require_once 'components/header.php';
+require_once 'components/edit-view.php';
 require_once 'components/footer.php';

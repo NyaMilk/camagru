@@ -1,7 +1,4 @@
 <?php
-require_once "components/header.php";
-require_once "util.php";
-
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 
@@ -10,6 +7,8 @@ if (!isset($_SESSION['name'])) {
     header('Location: index.php');
     return;
 }
+
+require_once "util.php";
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     /* подумать куда выводить ошибку */
@@ -87,8 +86,9 @@ if ($row !== false) {
         // else
         // header('Location: me.php?user=' . $_GET['user'] . '&page=1&favorites'); /* - - - */
     }
-    
-    require_once "components/me-view.php";
 } else
     echo 'Error profile';
+
+require_once "components/header.php";
+require_once "components/me-view.php";
 require_once "components/footer.php";

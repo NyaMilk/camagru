@@ -1,9 +1,11 @@
 <?php
+// if (session_status() == PHP_SESSION_NONE)
+//     session_start();
+if (!isset($_SESSION))
+    session_start();
+
 require_once "components/header.php";
 require_once "util.php";
-
-if (session_status() == PHP_SESSION_NONE)
-    session_start();
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     $stmt = $pdo->prepare('SELECT confirm FROM Users WHERE name = :nm');
@@ -77,4 +79,5 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 
 <?php
 require_once "components/footer.php";
+flashMessages(); /* вариант и через алерт */
 ?>

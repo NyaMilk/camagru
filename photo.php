@@ -1,17 +1,17 @@
 <?php
-require_once "components/header.php";
-require_once 'util.php';
-
 if (session_status() == PHP_SESSION_NONE)
     session_start();
-
-flashMessages();
 
 if (!isset($_SESSION['name'])) {
     $_SESSION['error'] = 'Kek photo';
     header('Location: index.php');
     return;
 }
+
+require_once 'util.php';
+
+if (session_status() == PHP_SESSION_NONE)
+    session_start();
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     /* куда вывести ошибку? */
@@ -77,9 +77,9 @@ $stmt->execute(array(
     ':iid' => $_GET['img']
 ));
 if ($likes = $stmt->fetch(PDO::FETCH_ASSOC))
-    $src = '../img/valentines-heart1.svg';
+    $src = '../img/icon/valentines-heart1.svg';
 else
-    $src = '../img/valentines-heart.svg'; /* - - - */
+    $src = '../img/icon/valentines-heart.svg'; /* - - - */
 
 if ($row !== false) {
     if (isset($_POST['text_comment']) && $_POST['text_comment']) /* valid */ {
@@ -101,8 +101,11 @@ if ($row !== false) {
             header('Location: photo.php?img=' . $_GET['img']);
         }
     }
-
-    require_once "components/photo-view.php";
 } else
     echo 'Error photo';
+
+require_once "components/header.php";
+require_once "components/photo-view.php";
 require_once "components/footer.php";
+
+flashMessages();

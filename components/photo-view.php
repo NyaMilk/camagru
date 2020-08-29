@@ -18,13 +18,13 @@
                     <p>Share:</p>
                     <!-- esc_url( sprintf( 'http://www.twitter.com?status=%s', urlencode( $message ) ) ); -->
                     <a class="btn btn-default btn-lg" target="_blank" title="facebook" href="http://www.facebook.com/sharer.php?u=http://localhost:8080/photo.php?img=<?= $_GET['img'] ?>&text=True%20story">
-                        <img src="../img/facebook.svg" alt="fb">
+                        <img src="../img/icon/facebook.svg" alt="fb">
                     </a>
                     <a class="btn btn-default btn-lg" target="_blank" title="twitter" href="http://twitter.com/share?url=http://localhost:8080/photo.php?img=<?= $_GET['img'] ?>&text=True%20story">
-                        <img src="../img/twitter.svg" alt="tw">
+                        <img src="../img/icon/twitter.svg" alt="tw">
                     </a>
                     <a class="btn btn-default btn-lg" target="_blank" title="vk" href="http://vk.com/share.php?url=http://localhost:8080/photo.php?img=<?= $_GET['img'] ?>&text=True%20story">
-                        <img src="../img/vk.svg" alt="vk">
+                        <img src="../img/icon/vk.svg" alt="vk">
                     </a>
                 </div>
 
@@ -68,7 +68,7 @@
                             if ($_SESSION['user_id'] == $row['user_id'] || $_SESSION['user_id'] == $comment['user_id']) {
 
                                 echo '<a href="#openModal' . $i . '">';
-                                echo '<img class="page-img_delete" src="img/cancel.svg">';
+                                echo '<img class="page-img_delete" src="img/icon/cancel.svg">';
                                 echo '</a>';
 
                 ?>

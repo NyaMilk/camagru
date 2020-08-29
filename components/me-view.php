@@ -47,7 +47,7 @@
                 $photo = $photos->fetch(PDO::FETCH_ASSOC);
                 if ($photo !== false) {
                     if (isset($flag) && $flag == 1) {
-                        echo '<a class="profile-photos__link" href="add.php?user=' . htmlentities($row['name']) . '"><p class="profile-photos__link-img profile-addphoto__block"><img class="profile-addphoto" src="img/site/plus.svg">Add photo</p></a>' . "\n";
+                        echo '<a class="profile-photos__link" href="add.php?user=' . htmlentities($row['name']) . '"><p class="profile-photos__link-img profile-addphoto__block"><img class="profile-addphoto" src="img/icon/plus.svg">Add photo</p></a>' . "\n";
                         $i++;
                         $flag = 0;
                     }
@@ -57,7 +57,7 @@
                     echo '</a>' . "\n";
                     if ($_SESSION['user_id'] == $row['user_id']) {
                         echo '<a class="profile-photos__link-delete" href="#openModal' . $i . '">';
-                        echo '<img class="page_img_delete" src="img/cancel.svg"></a>';
+                        echo '<img class="page_img_delete" src="img/icon/cancel.svg"></a>';
         ?>
                         <div id="openModal<?= $i ?>" class="modal">
                             <div class="modal-dialog">
