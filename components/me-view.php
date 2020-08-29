@@ -79,7 +79,7 @@
                 }
             }
         } elseif (isset($_GET['posts']) && $posts == 0 && isset($_SESSION['name']) && $_SESSION['name'] == $row['name'])
-            echo '<a class="profile-photos__link" href="add.php?user=' . htmlentities($row['name']) . '"><p class="profile-photos__link-img profile-addphoto-block"><img class="profile-addphoto" src="img/site/plus.svg">Add photo</p></a>' . "\n";
+            echo '<a class="profile-photos__link" href="add.php?user=' . htmlentities($row['name']) . '"><p class="profile-photos__link-img profile-addphoto__block"><img class="profile-addphoto" src="img/icon/plus.svg">Add photo</p></a>' . "\n";
         elseif (isset($_GET['posts']) && $posts == 0)
             echo '<p class="count-message">No photos :C</p>';
 
