@@ -4,12 +4,10 @@ require_once 'config/pdo.php';
 function flashMessages()
 {
     if (isset($_SESSION['error'])) {
-        // echo '<p class="message_error">' . htmlentities($_SESSION['error']) . "</p>\n";
         echo '<script>alert("' . htmlentities($_SESSION['error']) . '");</script>';
         unset($_SESSION['error']);
     }
     if (isset($_SESSION['success'])) {
-        // echo '<p class="message_success">' . htmlentities($_SESSION['success']) . "</p>\n";
         echo '<script>alert("' . htmlentities($_SESSION['success']) . '");</script>';
         unset($_SESSION['success']);
     }

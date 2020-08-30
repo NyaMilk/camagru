@@ -18,12 +18,13 @@ if (isset($_POST['submit']) && $_POST['submit'] === 'Send') {
     $headers = "MIME-Version: 1.0\r\n";
     $headers .= "Content-type: text/html; charset=utf-8\r\n";
     // $headers .= "From: no-reply@example.com\r\n";
-    $headers .= "From: nyamilk@yandex.ru\r\n";
+    $headers .= "From: amilyukovadev@gmail.com\r\n";
     $message = '<p>Your username: ' . htmlentities($row['name']) . '</p>';
     $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($row['name']) . '">link</a></p>';
     mail($email, $subject, $message, $headers); /* проверка на ошибку? */
     /* прописать саксес ?? */
-    header('Location: remind.php');
+    
+    header('Location: index.php');
     return;
 }
 

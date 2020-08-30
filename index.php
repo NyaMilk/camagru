@@ -2,11 +2,10 @@
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 
-require_once 'util.php';
-
 if (isset($_SESSION['name']))
     header('Location: gallery.php?sort=all&page=1');
 
+require_once 'util.php';
 
 if (isset($_POST['submit'])) {
     $salt = 'XyZzy12*_';
@@ -37,15 +36,15 @@ if (isset($_POST['submit'])) {
                     return;
                 }
             }
-
             header('Location: gallery.php?sort=all&page=1');
             return;
         } else {
-            $_SESSION['error'] = 'Incorrect password'; /* проверка имени */
+            $_SESSION['error'] = 'Incorrect username or password';
             header('Location: index.php');
             return;
         }
     }
+
     if ($_POST['submit'] === 'Sign Up') {
         if (strlen($_POST['username_up']) == 0 || strlen($_POST['email_up']) == 0 || strlen($_POST['pass_up']) == 0 || strlen($_POST['repass_up']) == 0) {
             $_SESSION['error'] = 'All values are required';
@@ -56,8 +55,6 @@ if (isset($_POST['submit'])) {
         $page = 'index.php';
         checkUserName($pdo, $page);
 
-        /* 25.07 */
-
         $email = $_POST['email_up'];
         $subject = 'Confirm email address';
         $hash = md5($_POST['username_up'] . time());
@@ -65,10 +62,9 @@ if (isset($_POST['submit'])) {
         $headers .= "Content-type: text/html; charset=utf-8\r\n";
         // $headers .= "To: <$email>\r\n";
         // $headers .= "From: no-reply@example.com\r\n";
-        $headers .= "From: nyamilk@yandex.ru\r\n";
+        // $headers .= "From: nyamilk@yandex.ru\r\n";
+        $headers .= "From: amilyukovadev@gmail.com\r\n";
         $message = '<p>To complete the sign-up process please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $hash . '">link</a></p>';
-
-        /* 25.07 end */
 
         $stmt = $pdo->prepare('INSERT INTO Users (name, email, password, confirm, hash) VALUES (:nm, :em, :ps, :cf, :hs)');
         $stmt->execute(array(
@@ -79,8 +75,7 @@ if (isset($_POST['submit'])) {
             ':hs' => $hash
         ));
         $_SESSION['success'] = 'Profile added. You need to confirm the email address.';
-
-        /* 27.07 */
+        
         mail($email, $subject, $message, $headers); /* проверка на ошибку? */
 
         header('Location: index.php');
@@ -88,7 +83,6 @@ if (isset($_POST['submit'])) {
     }
 }
 
-/* 27.07 end */
 require_once 'components/header.php';
 require_once 'components/login.php';
 require_once 'components/footer.php';

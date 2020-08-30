@@ -4,7 +4,7 @@
             <div class="edit-page__form-img">
                 <img id="current-avatar" src="<?= htmlentities($row['avatar']) ?>">
                 <label class="btn-blue">
-                    <input id="new-avater" name="ava" type="file" onchange="document.getElementById('current-avatar').src = window.URL.createObjectURL(this.files[0])">
+                    <input id="new-avatar" name="ava" type="file">
                     Change avatar
                 </label>
             </div>
@@ -42,11 +42,4 @@
     </div>
 </div>
 
-<script>
-    // document.getElementById("new-avater").addEventListener("change", function() {
-    //     var reader = new FileReader();
-    //     reader.onload = function(e) {
-    //         document.getElementById("image").setAttribute('src', e.target.result);
-    //     }
-    // });
-</script>
+<script src="js/edit.js"></script>
