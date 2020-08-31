@@ -9,7 +9,6 @@ if (!isset($_SESSION['name'])) {
 }
 
 require_once 'util.php';
-flashMessages();
 
 if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_GET['user']) {
     $salt = 'XyZzy12*_';
@@ -61,7 +60,6 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                 if (!file_exists($upload_dir))
                     mkdir($upload_dir, 0777, true);
 
-           
                 $tmp_name = $_FILES['ava']['tmp_name'];
                 $name = $upload_dir . '/' . date('HisdmY') . '_' .$row['user_id'] . '.png';
                 // basename() может предотвратить атаку на файловую систему;
@@ -88,3 +86,5 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
 require_once 'components/header.php';
 require_once 'components/edit-view.php';
 require_once 'components/footer.php';
+
+flashMessages();

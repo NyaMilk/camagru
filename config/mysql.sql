@@ -9,10 +9,11 @@ CREATE TABLE Users
     name VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) UNIQUE,
     password VARCHAR(512) NOT NULL,
-    confirm ENUM('no', 'yes') NOT NULL, /* default */
+    confirm ENUM('no', 'yes') NOT NULL DEFAULT 'no', /* default */
     hash VARCHAR(512),
     status VARCHAR(255) DEFAULT 'user',
     avatar VARCHAR (255) DEFAULT 'img/icon/user.svg',
+    notification ENUM('no', 'yes') NOT NULL DEFAULT 'yes',
     description_user VARCHAR (255) DEFAULT 'About me...',
     created_at_user DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (user_id)

@@ -10,9 +10,6 @@ if (!isset($_SESSION['name'])) {
 
 require_once 'util.php';
 
-if (session_status() == PHP_SESSION_NONE)
-    session_start();
-
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     /* куда вывести ошибку? */
     $_SESSION['error'] = 'Confirm your email address.';
@@ -65,7 +62,7 @@ $stmt->execute(array(':iid' => $_GET['img']));
 $view = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-$stmt = $pdo->prepare('SELECT u.user_id, u.name, u.avatar, p.likes, p.path, p.description_photo, p.created_at_photo
+$stmt = $pdo->prepare('SELECT u.user_id, u.name, u.avatar, u.email, u.notification, p.likes, p.path, p.description_photo, p.created_at_photo
 FROM Users u JOIN Photo p ON u.user_id = p.user_id WHERE p.img_id = :iid');
 $stmt->execute(array(':iid' => $_GET['img']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -89,6 +86,17 @@ if ($row !== false) {
             ':iid' => $_GET['img'],
             ':cm' => nl2br(htmlentities($_POST['text_comment']))
         ));
+        /* mail */
+        if ($row['notification'] == 'yes') {
+            $email = $row['email'];
+            $subject = 'New comment';
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-type: text/html; charset=utf-8\r\n";
+            $headers .= "From: amilyukovadev@gmail.com\r\n";
+            $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_GET['img'] . '">photo</a></p>
+            <p>To unsubscribe from this thread, please <a href="">click here</a></p>';
+            mail($email, $subject, $message, $headers);
+        }
         header('Location: photo.php?img=' . $_GET['img']);
     }
     $test = $pdo->prepare('SELECT * FROM Comment JOIN Users ON Comment.user_id = Users.user_id WHERE img_id = :iid ORDER BY comment_id');

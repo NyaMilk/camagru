@@ -595,7 +595,6 @@ a {
   min-height: 50px;
   resize: none;
   font-family: inherit;
-  margin-bottom: 35px;
   border-radius: 25px;
 }
 
@@ -630,6 +629,11 @@ a {
 .edit-page__form-text h2 {
   margin-bottom: 15px;
   text-transform: uppercase;
+}
+
+.edit-page__form-text h2:not(:first-child)
+{
+  margin-top: 35px;
 }
 
 .edit-page__form-text label {

@@ -66,12 +66,11 @@ if (isset($_POST['submit'])) {
         $headers .= "From: amilyukovadev@gmail.com\r\n";
         $message = '<p>To complete the sign-up process please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $hash . '">link</a></p>';
 
-        $stmt = $pdo->prepare('INSERT INTO Users (name, email, password, confirm, hash) VALUES (:nm, :em, :ps, :cf, :hs)');
+        $stmt = $pdo->prepare('INSERT INTO Users (name, email, password, hash) VALUES (:nm, :em, :ps, :hs)');
         $stmt->execute(array(
             ':nm' => $_POST['username_up'],
             ':em' => $_POST['email_up'],
             ':ps' => hash('sha512', $salt . $_POST['pass_up']),
-            ':cf' => 'no',
             ':hs' => $hash
         ));
         $_SESSION['success'] = 'Profile added. You need to confirm the email address.';
