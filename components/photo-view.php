@@ -102,7 +102,23 @@
 </section>
 
 <script>
-    let photo = document.getElementById('text');
-    photo
-    
+    let text = document.getElementById('text');
+    let btn = document.querySelector('.btn-blue');
+
+    text.addEventListener('keyup', function(event) {
+        if (this.value.length > 80)
+        {
+            btn.disabled = true;
+            btn.style.background = "#e6e7ed";
+            btn.style.borderColor = "#e6e7ed";
+            btn.style.cursor = "auto";
+        }
+        else
+        {
+            btn.disabled = false;
+            btn.style.background = "#49d1ca";
+            btn.style.borderColor = "#49d1ca";
+            btn.style.cursor = "pointer";
+        }
+    });
 </script>

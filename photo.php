@@ -117,3 +117,5 @@ require_once "components/photo-view.php";
 require_once "components/footer.php";
 
 flashMessages();
+
+

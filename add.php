@@ -27,6 +27,9 @@ if (isset($_POST['src'])) {
     header('Location: me.php?user=' . $_SESSION['name'] . '&page=1&posts');
 }
 
+$stmt_filters = $pdo->query("SELECT path FROM Filters");
+$stmt_stickers = $pdo->query("SELECT path FROM Stickers");
+
 require_once "components/header.php";
 require_once "components/add-view.php";
 require_once "components/footer.php";

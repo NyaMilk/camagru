@@ -34,7 +34,7 @@
                 <p>Save</p>
                 <form method="post" enctype="multipart/form-data">
                     <input id="save" name="src" type="hidden" value="img/preview.png">
-                    <input name="save" type="submit" value="Save">
+                    <input id="save_btn" name="save" type="submit" value="Save" disabled>
                 </form>
             </label>
             <label id="discard" class="custom-file-upload">
@@ -46,12 +46,9 @@
         <div class="photo-filters">
             <div class="photo-carousel">
                 <?php
-                $stmt = $pdo->query("SELECT path FROM Filters");
                 $i = 0;
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<div id="' . $i . '" class="filter"><img class="carousel-item" src="' . $row['path'] . '"></div>';
-                    $i++;
-                }
+                while ($row = $stmt_filters->fetch(PDO::FETCH_ASSOC))
+                    echo '<div id="' . $i++ . '" class="filter"><img class="carousel-item" src="' . $row['path'] . '"></div>';
                 ?>
             </div>
         </div>
@@ -59,12 +56,9 @@
         <div class="photo-stickers">
             <div id="stick" class="photo-carousel">
                 <?php
-                $stmt = $pdo->query("SELECT path FROM Stickers");
                 $i = 0;
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo '<div id="' . $i . '" class="sticker"><img class="carousel-item" src="' . $row['path'] . '"></div>';
-                    $i++;
-                }
+                while ($row = $stmt_stickers->fetch(PDO::FETCH_ASSOC))
+                    echo '<div id="' . $i++ . '" class="sticker"><img class="carousel-item" src="' . $row['path'] . '"></div>';
                 ?>
             </div>
         </div>
