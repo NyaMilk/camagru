@@ -1,4 +1,4 @@
-(function() {
+(function () {
     let width = 900;
     let height = 0;
 
@@ -8,32 +8,34 @@
     let preview = document.getElementById('preview');
     let video = document.getElementById('video');
     let canvas = document.getElementById('canvas');
-    let start_button = document.getElementById('startbutton'); // where?
     let shoot = document.getElementById('shoot');
     let discard = document.getElementById('discard');
     let save = document.getElementById('save');
 
-    let filter = "none";
-    let sticker = null;
+    let snapchat = {
+        filter: "none",
+        isClicked: false,
+        stickers: []
+    };
     let sticker_width = 100;
     let sticker_height = 100;
-    let x = 30;
-    let y = 30;
+    let start_pos_x = 100;
+    let start_pos_y = 100;
 
     function startup() {
         navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false
-            })
-            .then(function(stream) {
+            video: true,
+            audio: false
+        })
+            .then(function (stream) {
                 video.srcObject = stream;
                 video.play();
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.log("An error occurred: " + err);
             });
 
-        video.addEventListener('canplay', function(ev) {
+        video.addEventListener('canplay', function (ev) {
             if (!streaming) {
                 height = video.videoHeight / (video.videoWidth / width);
                 if (isNaN(height)) {
@@ -50,7 +52,7 @@
             }
         }, false);
 
-        shoot.addEventListener('click', function(ev) {
+        shoot.addEventListener('click', function (ev) {
             takepicture();
             ev.preventDefault();
         }, false);
@@ -92,7 +94,7 @@
             const stream = video.srcObject;
             const tracks = stream.getTracks();
 
-            tracks.forEach(function(track) {
+            tracks.forEach(function (track) {
                 track.stop();
             });
 
@@ -114,15 +116,21 @@
     ];
 
     document.querySelectorAll('.filter').forEach(item => {
-        item.addEventListener('click', function() {
-            filter = filters[this.id];
+        item.addEventListener('click', function () {
+            snapchat['filter'] = filters[this.id];
             render();
         }, false);
     });
 
     document.querySelectorAll('.sticker').forEach(item => {
-        item.addEventListener('click', function() {
-            sticker = document.getElementById('stick').getElementsByClassName('sticker')[this.id].getElementsByTagName('img')[0];
+        item.addEventListener('click', function () {
+            snapchat['stickers'].push({
+                elem: document.getElementById('stick').getElementsByClassName('sticker')[this.id].getElementsByTagName('img')[0],
+                x: start_pos_x,
+                y: start_pos_y,
+                isActive: false
+            }
+            );
             render();
         }, false);
     })
@@ -132,30 +140,57 @@
         context.canvas.width = photo.width;
         context.canvas.height = photo.height;
 
-        context.filter = filter;
+        context.filter = snapchat['filter'];
         context.drawImage(photo, 0, 0, photo.width, photo.height);
         context.filter = "none";
-        if (sticker)
-            context.drawImage(sticker, x, y, sticker_width, sticker_height);
+        if (snapchat) {
+            for (let el of snapchat['stickers']) {
+                if (el.isActive)
+                    context.fillRect(el.x, el.y, sticker_width, sticker_height);
+                context.drawImage(el['elem'], el.x, el.y, sticker_width, sticker_height);
+            }
+        }
 
         let data = canvas.toDataURL('image/png');
         preview.setAttribute('src', data);
         save.value = preview.src;
     }
 
-    function moveSticker(e) {
-        x = e.offsetX - sticker_width / 2;
-        y = e.offsetY - sticker_height / 2;
-        render();
-    }
-
-    discard.addEventListener('click', function() {
+    discard.addEventListener('click', function () {
         filter = "none";
-        sticker = null;
+        snapchat = [];
         render();
     }, false);
 
-    function readURL() {
+    function inArrayStickers(newX, newY) {
+        for (let i = snapchat['stickers'].length - 1; i > -1; i--) {
+            let el = snapchat['stickers'][i];
+            if (newX >= el.x && newX <= el.x + sticker_width && newY >= el.y && newY <= el.y + sticker_height) {
+                el.isActive = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    document.getElementById('preview').addEventListener('click', function (e) {
+        if (!snapchat['isClicked'] && inArrayStickers(e.offsetX, e.offsetY)) {
+            snapchat['isClicked'] = true;
+        }
+        else {
+            for (let el of snapchat['stickers']) {
+                if (el.isActive) {
+                    el.x = e.offsetX - sticker_width / 2;
+                    el.y = e.offsetY - sticker_height / 2;
+                    el.isActive = false;
+                }
+            }
+            snapchat['isClicked'] = false;
+        }
+        render();
+    }, false);
+
+    document.getElementById('file-upload').addEventListener('change', function () {
         if (this.files && this.files[0]) {
             if (!this.files[0].type.match("image*")) {
                 alert("Wrong type file");
@@ -163,7 +198,7 @@
             }
             let reader = new FileReader();
 
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 filter = "none";
                 sticker = null;
                 document.getElementById('preview')
@@ -173,8 +208,22 @@
             };
             reader.readAsDataURL(this.files[0]);
         }
-    }
+    }, false);
 
-    document.getElementById('preview').addEventListener('click', moveSticker, false);
-    document.getElementById('file-upload').addEventListener('change', readURL, false);
+    document.getElementById('save').addEventListener("click", function () {
+        let src = preview.src;
+        const request = new XMLHttpRequest();
+        const url = "add.php";
+        const param = "src=" + src;
+        request.open("POST", url, true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        request.addEventListener("readystatechange", () => {
+
+            if (request.readyState === 4 && request.status === 200) {
+                console.log(request.responseText);
+            }
+        });
+        request.send(param);
+    }, false);
 })();

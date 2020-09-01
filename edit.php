@@ -13,12 +13,25 @@ require_once 'util.php';
 if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_GET['user']) {
     $salt = 'XyZzy12*_';
 
-    $stmt = $pdo->prepare('SELECT user_id, name, email, password, avatar, description_user FROM Users WHERE name = :nm');
+    $stmt = $pdo->prepare('SELECT user_id, name, email, password, avatar, description_user, notification FROM Users WHERE name = :nm');
     $stmt->execute(array(':nm' => $_GET['user'])); /* из сессии мб? */
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
+        if ($row['notification'] == 'yes')
+            $checked = 'checked';
+
         if (isset($_POST['submit']) && $_POST['submit'] == 'Save') {
             $page = 'edit.php?user=' . $row['name'];
+
+            if (isset($_POST['notific']) && $_POST['notific'] == 'yes')
+                $notific = 'yes';
+            else
+                $notific = 'no';
+            $stmt = $pdo->prepare('UPDATE Users SET notification = :nf WHERE user_id = :uid');
+            $stmt->execute(array(
+                ':nf' => $notific,
+                ':uid' => $_SESSION['user_id']
+            ));
 
             // if (empty($_POST['username_up']) || empty($_POST['email'])) {
             if (strlen($_POST['username_up']) == 0 || strlen($_POST['email_up']) == 0) {
@@ -61,7 +74,7 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                     mkdir($upload_dir, 0777, true);
 
                 $tmp_name = $_FILES['ava']['tmp_name'];
-                $name = $upload_dir . '/' . date('HisdmY') . '_' .$row['user_id'] . '.png';
+                $name = $upload_dir . '/' . date('HisdmY') . '_' . $row['user_id'] . '.png';
                 // basename() может предотвратить атаку на файловую систему;
                 // может быть целесообразным дополнительно проверить имя файла
                 $move = move_uploaded_file($tmp_name, $name);

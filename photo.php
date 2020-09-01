@@ -84,7 +84,7 @@ if ($row !== false) {
         $stmt->execute(array(
             ':uid' => $_SESSION['user_id'],
             ':iid' => $_GET['img'],
-            ':cm' => nl2br(htmlentities($_POST['text_comment']))
+            ':cm' => nl2br(mb_substr(htmlentities($_POST['text_comment']), 0, 80))
         ));
         /* mail */
         if ($row['notification'] == 'yes') {

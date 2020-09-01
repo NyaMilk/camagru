@@ -30,7 +30,6 @@
 
             </div>
 
-
             <p class="page-img__photo-description"><?= htmlentities($row['description_photo']) ?></p>
             <time><?= date("d M Y G:i", strtotime($row['created_at_photo'])) ?></time>
 
@@ -45,8 +44,9 @@
         <div class="page-img__comments">
             <div class="page-img__comments-set">
                 <h2>Comments</h2>
-                <form method="post">
-                    <textarea name="text_comment" rows="1" placeholder="Leave a comment"></textarea>
+                <form class="page-img__comments-set__form" method="post">
+                    <span class="span_comment">No more than 80 characters</span>
+                    <textarea id="text" name="text_comment" rows="1" placeholder="Leave a comment"></textarea>
                     <button class="btn-blue" type="submit">Send</button>
                 </form>
             </div>
@@ -100,3 +100,9 @@
         </div>
     </div>
 </section>
+
+<script>
+    let photo = document.getElementById('text');
+    photo
+    
+</script>

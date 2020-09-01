@@ -744,7 +744,7 @@ a {
   margin-top: 15px;
 }
 
-.page-img__comments-set form {
+.page-img__comments-set .page-img__comments-set__form {
   display: flex;
   flex-wrap: wrap-reverse;
 }
@@ -765,6 +765,33 @@ a {
   margin-top: 15px;
   border-radius: 25px;
   font-family: inherit;
+}
+
+.page-img__comments-set__form .span_comment {
+  visibility: hidden;
+  position: absolute;
+  background-color: #999;
+  color: #fff;
+  text-align: center;
+  border-radius: 25px;
+  padding: 15px 20px;
+  top: -15px;
+  left: 35%;
+}
+
+.page-img__comments-set__form .span_comment::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #999 transparent transparent transparent;
+}
+
+.page-img__comments-set__form:hover .span_comment {
+  visibility: visible;
 }
 /* media-query */
 
@@ -975,4 +1002,119 @@ a {
   color: #e6e7ed;
   text-align: center;
   padding-top: 25px;
+}
+
+/* add.php */
+.photo-edit {
+  display: flex;
+  padding: 15px 0;
+}
+
+.photo-upload {
+  display: flex;
+  justify-content: space-around;
+}
+
+.photo-upload label {
+  cursor: pointer;
+  width: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.photo-upload label:hover {
+  color: #999;
+}
+
+.photo-upload p {
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.photo-edit input {
+  display: none;
+}
+
+.photo-edit .custom-file-upload img {
+  height: 40px;
+}
+
+.photo-edit__canvas {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  margin: 25px auto;
+}
+
+.photo-edit #preview,
+#origin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100%;
+  max-width: 100%;
+}
+
+#origin {
+  visibility: hidden;
+}
+
+.photo-carousel {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+}
+
+.photo-carousel div {
+  min-width: 200px;
+
+  /* text-align: center; */
+}
+
+.photo-filters {
+  margin: 15px 0;
+}
+
+.photo-filters .photo-carousel img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.photo-stickers .photo-carousel img {
+  height: 180px;
+}
+
+.photo-filters ::-webkit-scrollbar,
+.photo-stickers ::-webkit-scrollbar {
+  height: 25px;
+}
+
+.photo-filters ::-webkit-scrollbar-track,
+.photo-stickers ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.photo-filters ::-webkit-scrollbar-thumb,
+.photo-stickers ::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.photo-filters ::-webkit-scrollbar-thumb:hover,
+.photo-stickers ::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+canvas,
+video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100%;
+  max-width: 100%;
+  display: none;
 }

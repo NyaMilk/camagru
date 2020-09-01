@@ -10,14 +10,14 @@ if (!isset($_SESSION['name'])) {
 
 require_once "util.php";
 
-if (isset($_POST['save']) && $_POST['save'] === "Save") {
+if (isset($_POST['src'])) {
     $upload_dir = 'images/' . $_SESSION['user_id'];
     if (!file_exists($upload_dir))
         mkdir($upload_dir, 0777, true);
     $upload_dir .= '/post';
     if (!file_exists($upload_dir))
         mkdir($upload_dir, 0777, true);
-    $new_src = $upload_dir . '/' . date('HisdmY') . '_' .$_SESSION['user_id'] . '.png';
+    $new_src = $upload_dir . '/' . date('HisdmY') . '_' . $_SESSION['user_id'] . '.png';
     file_put_contents($new_src, file_get_contents($_POST['src']));
     $stmt = $pdo->prepare("INSERT INTO Photo (user_id, path) VALUES (:uid, :src)");
     $stmt->execute(array(

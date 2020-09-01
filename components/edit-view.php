@@ -3,15 +3,12 @@
         display: inline-block;
         position: relative;
         cursor: pointer;
-        -webkit-user-select: none;
+        /* -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
         -webkit-tap-highlight-color: transparent;
-        tap-highlight-color: transparent;
-        width: 100px;
-        text-align: center;
-
+        tap-highlight-color: transparent; */
         margin-bottom: 50px;
     }
 
@@ -21,29 +18,28 @@
     }
 
     .notif input+span {
-        position: relative;
         display: inline-block;
+        position: relative;
+        /* width: 80px;
+        height: 42px; */
         width: 100px;
         height: 52px;
         background: #e6e7ed;
         border-radius: 25px;
-        /* transition: all 0.40s cubic-bezier(.17, .67, .43, .98); */
-        transition: 0.40s;
+        transition: 0.3s;
     }
 
     .notif input+span:after {
         content: "";
         display: block;
         position: absolute;
+        /* width: 40px;
+        height: 40px; */
         width: 50px;
         height: 50px;
+        border: 1px solid #e6e7ed;
         border-radius: 50%;
         background: #fff;
-        box-shadow: inset 0 0 0 0.03em rgba(0, 0, 0, 0.1),
-            0 0 0.05em rgba(0, 0, 0, 0.05),
-            0 0.1em 0.2em rgba(0, 0, 0, 0.2);
-        /* transition: all 0.25s ease-out; */
-        transition: 0.25s;
     }
 
     .notif input:checked+span {
@@ -51,7 +47,7 @@
     }
 
     .notif input:checked+span:after {
-        left: 52px;
+        left: 50px;
     }
 </style>
 <div class="edit-page align_footer">
@@ -67,7 +63,7 @@
             <div class="edit-page__form-text">
                 <h2>Notification</h2>
                 <label class="notif">
-                    <input type="checkbox" checked>
+                    <input type="checkbox" name="notific" value="yes" <?= $checked ?>>
                     <span></span>
                 </label>
 
