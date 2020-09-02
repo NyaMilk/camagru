@@ -3,6 +3,8 @@
     let height = 0;
 
     let streaming = false;
+    let isInited = false;
+    let i = 1;
 
     let photo = document.getElementById('origin');
     let preview = document.getElementById('preview');
@@ -12,6 +14,7 @@
     let discard = document.getElementById('discard');
     let save = document.getElementById('save');
     let save_btn = document.getElementById('save_btn');
+    let file_upload = document.getElementById('file-upload');
 
     let snapchat = {
         filter: "none",
@@ -24,6 +27,9 @@
     let start_pos_y = 100;
 
     function startup() {
+        if (isInited)
+            destroyFiltersAndStickers();
+        clear();
         navigator.mediaDevices.getUserMedia({
             video: true,
             audio: false
@@ -53,7 +59,7 @@
         }, false);
 
         shoot.addEventListener('click', function (ev) {
-            takepicture();
+            takePicture();
             ev.preventDefault();
         }, false);
         shoot.removeAttribute('disabled');
@@ -69,7 +75,7 @@
         photo.setAttribute('src', data);
     }
 
-    function takepicture() {
+    function takePicture() {
         let context = canvas.getContext('2d');
         if (width && height) {
             canvas.width = width;
@@ -82,9 +88,11 @@
             preview.style.display = "block";
             preview.setAttribute('src', data);
             streaming = false;
-            save.value = preview.src;
             save_btn.removeAttribute("disabled");
             shoot.setAttribute('disabled', 'disabled');
+            save.value = preview.src;
+            if (!isInited)
+                initFiltersAndStickers();
         } else {
             clearphoto();
         }
@@ -98,7 +106,9 @@
             tracks.forEach(function (track) {
                 track.stop();
             });
-
+            video.style.display = "none";
+            preview.style.display = "block";
+            streaming = false;
             video.srcObject = null;
             streaming = false;
         }
@@ -116,26 +126,45 @@
         'brightness(200%)'
     ];
 
-    document.querySelectorAll('.filter').forEach(item => {
-        item.addEventListener('click', function () {
-            snapchat['filter'] = filters[this.id];
-            render();
-        }, false);
-    });
+    function addFilter() {
+        snapchat['filter'] = filters[this.id];
+        render();
+    }
 
-    document.querySelectorAll('.sticker').forEach(item => {
-        item.addEventListener('click', function () {
-            console.log(snapchat['stickers']);
-            snapchat['stickers'].push({
-                elem: document.getElementById('stick').getElementsByClassName('sticker')[this.id].getElementsByTagName('img')[0],
-                x: start_pos_x,
-                y: start_pos_y,
-                isActive: false
-            }
-            );
-            render();
-        }, false);
-    })
+    function addSticker() {
+        snapchat['stickers'].push({
+            elem: document.getElementById('stick').getElementsByClassName('sticker')[this.id].getElementsByTagName('img')[0],
+            x: start_pos_x,
+            y: start_pos_y,
+            isActive: false
+        }
+        );
+        render();
+    }
+
+    function initFiltersAndStickers() {
+        isInited = true;
+
+        document.querySelectorAll('.filter').forEach(item => {
+            item.addEventListener('click', addFilter, false);
+        });
+
+        document.querySelectorAll('.sticker').forEach(item => {
+            item.addEventListener('click', addSticker, false);
+        })
+    }
+
+    function destroyFiltersAndStickers() {
+        isInited = false;
+
+        document.querySelectorAll('.filter').forEach(item => {
+            item.removeEventListener('click', addFilter, false);
+        });
+
+        document.querySelectorAll('.sticker').forEach(item => {
+            item.removeEventListener('click', addSticker, false);
+        })
+    }
 
     function render() {
         let context = canvas.getContext('2d');
@@ -147,18 +176,28 @@
         context.filter = "none";
         if (snapchat['stickers']) {
             for (let el of snapchat['stickers']) {
-                if (el.isActive)
-                    context.fillRect(el.x, el.y, sticker_width, sticker_height);
+                if (el.isActive) {
+                    context.arc(el.x + sticker_width / 2, el.y + sticker_width / 2, sticker_width / 2, 0, 2 * Math.PI);
+                    context.lineWidth = 10;
+                    context.strokeStyle = "#49d1ca";
+                    context.stroke();
+                }
                 context.drawImage(el['elem'], el.x, el.y, sticker_width, sticker_height);
             }
         }
         let data = canvas.toDataURL('image/png');
         preview.setAttribute('src', data);
+        save.value = preview.src;
+    }
+
+    function clear() {
+        snapchat['filter'] = "none";
+        snapchat['stickers'] = [];
+        preview.src = "img/preview.png";
     }
 
     discard.addEventListener('click', function () {
-        filter = "none";
-        snapchat['stickers'] = [];
+        clear();
         render();
     }, false);
 
@@ -190,12 +229,20 @@
         render();
     }, false);
 
-    document.getElementById('file-upload').addEventListener('change', function () {
+    file_upload.addEventListener('click', function () {
+        if (streaming)
+            vidOff();
+        if (!isInited)
+            initFiltersAndStickers();
+    }, false);
+
+    file_upload.addEventListener('change', function () {
         if (this.files && this.files[0]) {
             if (!this.files[0].type.match("image*")) {
                 alert("Wrong type file");
                 return;
             }
+            clear();
             let reader = new FileReader();
             save_btn.removeAttribute("disabled");
             reader.onload = function (e) {
@@ -208,23 +255,7 @@
                 save.value = preview.src;
             };
             reader.readAsDataURL(this.files[0]);
+            file_upload.value = "";
         }
-    }, false);
-
-    save.addEventListener("click", function () {
-        let src = preview.src;
-        const request = new XMLHttpRequest();
-        const url = "add.php";
-        const param = "src=" + src;
-        request.open("POST", url, true);
-        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-        request.addEventListener("readystatechange", () => {
-
-            if (request.readyState === 4 && request.status === 200) {
-                console.log(request.responseText);
-            }
-        });
-        request.send(param);
     }, false);
 })();

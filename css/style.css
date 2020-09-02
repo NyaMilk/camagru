@@ -437,7 +437,7 @@ a {
 
 .profile-photos {
   /* gallery_list */
-  min-height: 625px;
+  min-height: 700px;
   display: flex;
   flex-wrap: wrap;
   align-content: baseline;

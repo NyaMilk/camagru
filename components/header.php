@@ -13,7 +13,9 @@
     <header class="header">
         <div class="container">
             <div>
-                <a href="index.php"><h1>CamaGuru</h1></a>
+                <a href="index.php">
+                    <h1>CamaGuru</h1>
+                </a>
             </div>
             <nav class="header-navigation">
                 <ul class="header-navigation__list">
@@ -26,7 +28,10 @@
                         }
                     }
                     if (isset($_SESSION['name'])) {
-                        echo '<li><a href="me.php?user=' . $_SESSION['name'] . '&page=1&posts">Profile</a></li>';
+                        if ($_SERVER['PHP_SELF'] == '/gallery.php')
+                            echo '<li><a href="me.php?user=' . $_SESSION['name'] . '&page=1&posts">Profile</a></li>';
+                        else
+                            echo '<li><a href="gallery.php?sort=all&page=1">Gallery</a></li>';
                         echo '<li><a href="logout.php">Sign out</a></li>';
                     }
                     ?>
