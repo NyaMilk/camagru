@@ -27,7 +27,8 @@
     .gallery_list {
         min-height: 740px;
     }
-    .gallery_item {
+    .gallery_item,
+    .profile-photos__link-img {
         height: 235px;
     }
     .gallery_list a:nth-child(3n + 1) {
@@ -35,6 +36,12 @@
     }
     .gallery_list a:nth-child(3n) {
         padding-right: 0;
+    }
+    .profile-photos {
+        min-height: 245px;
+    }
+    .edit-page__form-img {
+        width: 300px;
     }
 }
 
@@ -57,7 +64,8 @@
     .photo__link {
         padding: 1px 3px;
     }
-    .gallery_item {
+    .gallery_item,
+    .profile-photos__link-img {
         height: 145px;
     }
     .gallery_list a:nth-child(3n + 1) {
@@ -70,21 +78,16 @@
     .profile-photos {
         min-height: 155px;
     }
-    .profile-head {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-    }
     .profile-head__img,
     .profile-head__img img {
         width: 200px;
         height: 200px;
     }
     .profile-data {
-        margin: 90px 0 0;
+        margin-top: 90px;
     }
     .profile-btn {
-        right: 25px;
+        right: 82px;
         top: -70px;
     }
     .profile-nav {
@@ -92,6 +95,16 @@
     }
     .profile-addphoto {
         height: 50px;
+    }
+    
+    .edit-page__form {
+        flex-direction: column;
+    }
+    .edit-page__form-text h2:first-child {
+        margin-top: 35px;
+    }
+    .edit-page__form-img {
+        width: 440px;
     }
 }
 
@@ -172,6 +185,72 @@
     }
     .profile-addphoto {
         height: 50px;
+    }
+    .edit-page__form {
+        flex-direction: column;  
+    }
+    .edit-page__form-text h2:first-child {
+        margin-top: 35px;
+    }
+    .edit-page__form-img {
+        width: 300px;
+    }
+
+    .page-img .container {
+        flex-direction: column;
+    }
+    .page-img__photo
+    {
+        width: 300px;
+    } 
+    .page-img__photo-block {
+        height: 300px;
+    }
+    .page-img__comments {
+        position: relative;
+        margin-top: 40px;
+        left: 0;
+    }
+    .page-img__photo-info {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+
+        height: 110px;
+    }
+    .page-img__comments-set textarea  {
+        width: 300px;
+    }
+    .page-img__comments-set {
+        width: 300px;
+    }
+    .page-img__comments-set h2 {
+        text-align: center;
+    }
+    .page-img__comments-set .page-img__comments-set__form {
+        display: block;
+    }
+    .page-img__comments-set__form {
+        text-align: center;
+    }
+    .page-img__comments-set__form .btn-save {
+        margin-top: 10px;
+    }
+    .page-img__comments-list {
+        max-height: 500px;
+        width: 300px;
+    }
+    .page_info_user {
+        width: 210px;
+    }
+    .page-img__photo-user p {
+        width: 300px;
+    }
+    .page-img_delete {
+        top: 20px;
+    }
+    .count-message {
+        margin-bottom: 20px;
     }
 }
 

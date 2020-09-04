@@ -569,7 +569,8 @@ Firefox до версии 51 использует псевдоэлемент ::-
             margin-bottom: 20px;
         }
         
-        .modal-content form {
+        .modal-content form,
+        .modal-content div {
             display: flex;
             justify-content: space-around;
         }
@@ -582,8 +583,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
         .edit-page__form {
             display: flex;
             padding-top: 25px;
-            /* адаптив media-query */
-            /* flex-direction: column; */
+            margin-bottom: 20px;
         }
         
         .edit-page__form textarea.input-gray {
@@ -599,12 +599,17 @@ Firefox до версии 51 использует псевдоэлемент ::-
         
         .edit-page__form-img {
             text-align: center;
-            width: 10px;
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 110px;
+            margin-right: 50px;
         }
         
         .edit-page__form-img label {
-            display: inline-block;
+            width: 200px;
+            /* display: inline-block; */
             padding: 15px 25px;
             margin-top: 10px;
         }
@@ -694,6 +699,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             width: 55px;
             height: 55px;
             border-radius: 50%;
+            margin-right: 10px;
         }
         
         .page-img__photo-info {
@@ -713,7 +719,8 @@ Firefox до версии 51 использует псевдоэлемент ::-
         }
         
         .page-img__photo-user {
-            display: flex;
+            /* display: flex; */
+            display: inline-flex;
             color: #555;
         }
         
