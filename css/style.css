@@ -43,7 +43,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
         }
         
         .container {
-            min-width: 1080px;
+            width: 1080px;
             padding: 0 10px;
             margin: 0 auto;
         }
@@ -354,13 +354,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             opacity: 0.7;
         }
         
-        .gallery_list a:nth-child(3n + 1) {
-            padding-left: 0;
-        }
-        
-        .gallery_list a:nth-child(3n) {
-            padding-right: 0;
-        }
+      
         /* me.php */
         
         .profile-head {

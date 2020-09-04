@@ -61,12 +61,12 @@ $stmt = $pdo->prepare('SELECT SUM(counter) views FROM Views WHERE img_id = :iid'
 $stmt->execute(array(':iid' => $_GET['img']));
 $view = $stmt->fetch(PDO::FETCH_ASSOC);
 
-
 $stmt = $pdo->prepare('SELECT u.user_id, u.name, u.avatar, u.email, u.notification, p.likes, p.path, p.description_photo, p.created_at_photo
 FROM Users u JOIN Photo p ON u.user_id = p.user_id WHERE p.img_id = :iid');
 $stmt->execute(array(':iid' => $_GET['img']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
+$_SESSION['img'] = $_GET['img'];
 /* повторение запроса */
 $stmt = $pdo->prepare('SELECT * FROM Likes WHERE user_id = :uid AND img_id = :iid');
 $stmt->execute(array(
@@ -77,40 +77,6 @@ if ($likes = $stmt->fetch(PDO::FETCH_ASSOC))
     $src = '../img/icon/valentines-heart1.svg';
 else
     $src = '../img/icon/valentines-heart.svg'; /* - - - */
-
-if ($row !== false) {
-    if (isset($_POST['text_comment']) && $_POST['text_comment']) /* valid */ {
-        $stmt = $pdo->prepare('INSERT INTO Comment (user_id, img_id, comment) VALUES (:uid, :iid, :cm)');
-        $stmt->execute(array(
-            ':uid' => $_SESSION['user_id'],
-            ':iid' => $_GET['img'],
-            ':cm' => nl2br(mb_substr(htmlentities($_POST['text_comment']), 0, 80))
-        ));
-        /* mail */
-        if ($row['notification'] == 'yes') {
-            $email = $row['email'];
-            $subject = 'New comment';
-            $headers = "MIME-Version: 1.0\r\n";
-            $headers .= "Content-type: text/html; charset=utf-8\r\n";
-            $headers .= "From: amilyukovadev@gmail.com\r\n";
-            $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_GET['img'] . '">photo</a></p>
-            <p>To unsubscribe from this thread, please <a href="">click here</a></p>';
-            mail($email, $subject, $message, $headers);
-        }
-        header('Location: photo.php?img=' . $_GET['img']);
-    }
-    $test = $pdo->prepare('SELECT * FROM Comment JOIN Users ON Comment.user_id = Users.user_id WHERE img_id = :iid ORDER BY comment_id');
-    $test->execute(array(':iid' => $_GET['img']));
-
-    if (isset($_POST['delete'])) {
-        if (isset($_POST['comment_id']) && $_POST['comment_id'] && $_SESSION['user_id']) {
-            $stmt = $pdo->prepare('DELETE FROM Comment WHERE comment_id = :cid');
-            $stmt->execute(array(':cid' => $_POST['comment_id'])); /* проверить */
-            header('Location: photo.php?img=' . $_GET['img']);
-        }
-    }
-} else
-    echo 'Error photo';
 
 require_once "components/header.php";
 require_once "components/photo-view.php";

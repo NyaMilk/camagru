@@ -44,81 +44,16 @@
         <div class="page-img__comments">
             <div class="page-img__comments-set">
                 <h2>Comments</h2>
-                <form class="page-img__comments-set__form" method="post">
+                <div class="page-img__comments-set__form">
                     <span class="span_comment">No more than 80 characters</span>
                     <textarea id="text" name="text_comment" rows="1" placeholder="Leave a comment"></textarea>
-                    <button class="btn-blue" type="submit">Send</button>
-                </form>
+                    <button class="btn-blue btn-save" type="submit">Send</button>
+                </div>
             </div>
 
-            <div class="page-img__comments-list">
-                <?php
-                $comments = $test->rowCount();
-                if ($comments > 0) {
-                    for ($i = 1; $i <= $comments; $i++) {
-                        $comment = $test->fetch(PDO::FETCH_ASSOC);
-                        if ($comment !== false) {
-                            echo '<article>';
-                            echo '<div class="photo-user__block">';
-                            echo '<a href="me.php?user=' . htmlentities($comment['name']) . '&page=1&posts">';
-                            echo '<img class="photo-user__block-img" src="' . htmlentities($comment['avatar']) . '">';
-                            echo '</a></div>';
-                            echo '<div class="page_info_user"><span>' . htmlentities($comment['name']) . '</span> '; /* проверить */
-                            echo '<time>' . date("d M Y G:i", strtotime($comment['created_at_comment'])) . '</time>';
-                            if ($_SESSION['user_id'] == $row['user_id'] || $_SESSION['user_id'] == $comment['user_id']) {
-
-                                echo '<a href="#openModal' . $i . '">';
-                                echo '<img class="page-img_delete" src="img/icon/cancel.svg">';
-                                echo '</a>';
-
-                ?>
-                                <div id="openModal<?= $i ?>" class="modal">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <p class="modal-title">Delete comment?</p>
-                                            <p>This can’t be undone and it will be removed from your profile.</p>
-                                            <form method="post" action="photo.php?img=<?= $_GET['img'] ?>">
-                                                <input type="hidden" name="comment_id" value="<?= htmlentities($comment['comment_id']) ?>">
-                                                <input type="submit" name="delete" class="btn-blue" value="Delete">
-                                                <input type="submit" name="close" class="btn-gray" value="Close"> <!-- проверить -->
-                                                <!-- <a href="" class="close" title="Close">Close</a> -->
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                <?php
-
-                            }
-                            echo '<p>' . $comment['comment'] . '</p>';
-                            echo '</div></article>';
-                        }
-                    }
-                } else
-                    echo '<p class="count-message">There is no comment yet</p>';
-                ?>
-            </div>
+            <div class="page-img__comments-list"></div>
         </div>
     </div>
 </section>
 
-<script>
-    let text = document.getElementById('text');
-    let btn = document.querySelector('.btn-blue');
-
-    text.addEventListener('keyup', function(event) {
-        if (this.value.length > 80)
-        {
-            btn.disabled = true;
-            btn.style.background = "#e6e7ed";
-            btn.style.borderColor = "#e6e7ed";
-            btn.style.cursor = "auto";
-        }
-        else
-        {
-            btn.disabled = false;
-            btn.style.background = "#49d1ca";
-            btn.style.borderColor = "#49d1ca";
-            btn.style.cursor = "pointer";
-        }
-    });
-</script>
+<script src="js/photo.js"></script>

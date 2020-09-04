@@ -3,11 +3,15 @@
         min-width: 990px;
     }
     .container {
-        min-width: 970px;
+        width: 970px;
     }
-    /* .login {
-        min-height: 790px;
-    } */
+    .gallery_list a:nth-child(3n + 1) {
+        padding-left: 0;
+    }
+    
+    .gallery_list a:nth-child(3n) {
+        padding-right: 0;
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 989px) {
@@ -15,10 +19,22 @@
         min-width: 760px;
     }
     .container {
-        min-width: 740px;
+        width: 740px;
     }
     .login {
         min-height: 790px;
+    }
+    .gallery_list {
+        min-height: 740px;
+    }
+    .gallery_item {
+        height: 235px;
+    }
+    .gallery_list a:nth-child(3n + 1) {
+        padding-left: 0;
+    }
+    .gallery_list a:nth-child(3n) {
+        padding-right: 0;
     }
 }
 
@@ -27,7 +43,7 @@
         min-width: 480px;
     }
     .container {
-        min-width: 460px;
+        width: 460px;
     }
     .login {
         min-height: 700px;
@@ -36,21 +52,56 @@
         background: none;
     }
     .gallery_list {
-        min-height: 450px;
+        min-height: 455px;
+    }
+    .photo__link {
+        padding: 1px 3px;
     }
     .gallery_item {
-        height: 250px;
+        height: 145px;
+    }
+    .gallery_list a:nth-child(3n + 1) {
+        padding-left: 0;
+    }
+    .gallery_list a:nth-child(3n) {
+        padding-right: 0;
+    }
+
+    .profile-photos {
+        min-height: 155px;
+    }
+    .profile-head {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+    .profile-head__img,
+    .profile-head__img img {
+        width: 200px;
+        height: 200px;
+    }
+    .profile-data {
+        margin: 90px 0 0;
+    }
+    .profile-btn {
+        right: 25px;
+        top: -70px;
+    }
+    .profile-nav {
+        margin-top: 0;
+    }
+    .profile-addphoto {
+        height: 50px;
     }
 }
 
-@media screen and (min-width: 320px) and (max-width: 479px) {
+@media screen and (min-width: 0) and (max-width: 479px) {
     body {
         min-width: 320px;
         /* max-width: 480px; */
     }
     .container {
-        min-width: 300px;
-        /* max-width: 460px; */
+        width: 320px;
     }
     h1 {
         font-size: 28px;
@@ -86,7 +137,50 @@
     .gallery_list {
         min-height: 450px;
     }
-    .gallery_item {
-        height: 140px;
+    .photo__link,
+    .profile-photos__link {
+        flex: 0 0 50%;
+        padding: 1px 3px;
+    }
+    .gallery_item,
+    .profile-photos__link-img {
+        height: 145px;
+    }
+
+    .profile-photos {
+        min-height: 155px;
+    }
+    .profile-head {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+    .profile-head__img,
+    .profile-head__img img {
+        width: 200px;
+        height: 200px;
+    }
+    .profile-data {
+        margin: 90px 0 0;
+    }
+    .profile-btn {
+        right: 25px;
+        top: -70px;
+    }
+    .profile-nav {
+        margin-top: 0;
+    }
+    .profile-addphoto {
+        height: 50px;
     }
 }
+
+/* @media screen and (width: 375px)
+{
+    .container {
+        width: 375px;
+    }
+    .gallery_item {
+        height: 170px;
+    }
+} */
