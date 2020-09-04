@@ -24,6 +24,7 @@
         </div>
 
         <div class="photo-upload">
+            
             <label class="custom-file-upload">
                 <img src="img/icon/shoot.svg" alt="from computer">
                 <p>Shoot</p>
