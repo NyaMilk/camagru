@@ -659,6 +659,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             display: flex;
             flex-wrap: wrap;
             padding-top: 30px;
+            min-height: 1180px;
         }
         
         .page-img__photo-block {

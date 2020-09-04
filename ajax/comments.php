@@ -1,6 +1,7 @@
 <?php
 if (session_status() == PHP_SESSION_NONE)
     session_start();
+    
 require_once '../util.php';
 
 if (isset($_POST['comment'])) /* valid */ {
@@ -8,7 +9,8 @@ if (isset($_POST['comment'])) /* valid */ {
     $stmt->execute(array(
         ':uid' => $_SESSION['user_id'],
         ':iid' => $_SESSION['img'],
-        ':cm' => nl2br(mb_substr(htmlentities($_POST['comment']), 0, 80))
+        // ':cm' => nl2br(mb_substr(htmlentities($_POST['comment']), 0, 80))
+        ':cm' => nl2br(substr(htmlentities($_POST['comment']), 0, 80))
     ));
     /* mail  надо проверить*/
     if ($row['notification'] == 'yes') {

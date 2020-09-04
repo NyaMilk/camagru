@@ -12,6 +12,36 @@
     .gallery_list a:nth-child(3n) {
         padding-right: 0;
     }
+
+    /* photo.php */
+    .page-img .container
+       {
+           min-height: 900px;
+       }
+       .page-img__photo
+{
+    width: 400px;
+} 
+.page-img__photo-block {
+    height: 400px;
+}
+.page-img__comments {
+    left: 460px;
+}
+.page-img__comments-set {
+    width: 500px;
+}
+.page-img__comments-set textarea  {
+    width: 385px;
+}
+.page-img__comments-list {
+    width: 500px;
+    max-height: 720px;
+    margin-bottom: 20px;
+}
+.page_info_user {
+    width: 415px;
+}
 }
 
 @media screen and (min-width: 768px) and (max-width: 989px) {
@@ -43,6 +73,50 @@
     .edit-page__form-img {
         width: 300px;
     }
+
+       /* photo.php */
+       .page-img .container
+       {
+           min-height: 700px;
+       }
+.page-img__photo
+{
+    width: 300px;
+} 
+.page-img__photo-block {
+    height: 300px;
+}
+.page-img__photo-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+
+    height: 110px;
+}
+.page-img__comments {
+    left: 330px;
+}
+.page-img__comments-set {
+    width: 400px;
+}
+.page-img__comments-set textarea  {
+    width: 285px;
+}
+.page-img__comments-list {
+    max-height: 530px;
+    width: 400px;
+    margin-bottom: 20px;
+}
+.page_info_user {
+    width: 315px;
+}
+.page-img__comments-set__form .span_comment
+{
+    left: 9%;
+}
+.count-message {
+    margin-bottom: 20px;
+}
 }
 
 @media screen and (min-width: 480px) and (max-width: 767px) {
@@ -106,6 +180,49 @@
     .edit-page__form-img {
         width: 440px;
     }
+
+   /* photo.php */
+   .page-img .container {
+    flex-direction: column;
+}
+.page-img__photo
+{
+    width: 440px;
+} 
+.page-img__photo-block {
+    height: 440px;
+}
+.page-img__comments {
+    position: relative;
+    margin-top: 40px;
+    left: 0;
+}
+.page-img__comments-set {
+    width: 440px;
+}
+.page-img__comments-set h2 {
+    text-align: center;
+}
+
+.page-img__comments-set textarea  {
+    width: 320px;
+}
+
+.page-img__comments-list {
+    max-height: 500px;
+    width: 440px;
+    margin-bottom: 20px;
+}
+.page_info_user {
+    width: 355px;
+}
+.page-img__comments-set__form .span_comment
+{
+    left: 15%;
+}
+.count-message {
+    margin-bottom: 20px;
+}
 }
 
 @media screen and (min-width: 0) and (max-width: 479px) {
@@ -160,6 +277,7 @@
         height: 145px;
     }
 
+    /* me.php */
     .profile-photos {
         min-height: 155px;
     }
@@ -196,6 +314,7 @@
         width: 300px;
     }
 
+    /* photo.php */
     .page-img .container {
         flex-direction: column;
     }
@@ -239,6 +358,7 @@
     .page-img__comments-list {
         max-height: 500px;
         width: 300px;
+        margin-bottom: 20px;
     }
     .page_info_user {
         width: 210px;
@@ -249,17 +369,11 @@
     .page-img_delete {
         top: 20px;
     }
+    .page-img__comments-set__form .span_comment
+    {
+        left: 6%;
+    }
     .count-message {
         margin-bottom: 20px;
     }
 }
-
-/* @media screen and (width: 375px)
-{
-    .container {
-        width: 375px;
-    }
-    .gallery_item {
-        height: 170px;
-    }
-} */
