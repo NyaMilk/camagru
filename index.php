@@ -60,9 +60,6 @@ if (isset($_POST['submit'])) {
         $hash = md5($_POST['username_up'] . time());
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        // $headers .= "To: <$email>\r\n";
-        // $headers .= "From: no-reply@example.com\r\n";
-        // $headers .= "From: nyamilk@yandex.ru\r\n";
         $headers .= "From: amilyukovadev@gmail.com\r\n";
         $message = '<p>To complete the sign-up process please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $hash . '">link</a></p>';
 

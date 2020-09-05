@@ -87,7 +87,11 @@ if ($row !== false) {
         // header('Location: me.php?user=' . $_GET['user'] . '&page=1&favorites'); /* - - - */
     }
 } else
-    echo 'Error profile';
+{
+    $_SESSION['error'] = 'Error profile. Please contact the site administrator.';
+    header('Location: gallery.php?sort=all&page=1');
+    return;
+}
 
 require_once "components/header.php";
 require_once "components/me-view.php";

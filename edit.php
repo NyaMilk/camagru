@@ -57,7 +57,6 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                 }
             }
             if (!isset($_SESSION['error'])) {
-                $_SESSION['name'] = $row['name'];
                 $stmt = $pdo->prepare('UPDATE Users SET name = :nm, email = :em, description_user = :du WHERE user_id = :uid');
                 $stmt->execute(array(
                     ':nm' => $_POST['username_up'],
@@ -65,6 +64,7 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                     ':du' => $_POST['description'],
                     ':uid' => $_SESSION['user_id']
                 ));
+                $_SESSION['name'] = $_POST['username_up'];
 
                 $upload_dir = 'images/' . $row['user_id'];
                 if (!file_exists($upload_dir))
@@ -87,7 +87,7 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                     if (isset($row['avatar']) && $row['avatar'] && $row['avatar'] != 'img/icon/user.svg')
                         unlink($row['avatar']);
                 }
-                header('Location: me.php?user=' . $row['name'] . '&page=1&posts');
+                header('Location: me.php?user=' . htmlentities($_SESSION['name']) . '&page=1&posts');
             }
         }
         if (isset($_POST['submit']) && $_POST['submit'] == 'Cancel')
