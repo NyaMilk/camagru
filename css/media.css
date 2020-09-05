@@ -42,6 +42,9 @@
 .page_info_user {
     width: 415px;
 }
+.page-img__photo-description {
+    width: 400px;
+}
 }
 
 @media screen and (min-width: 768px) and (max-width: 989px) {
@@ -116,6 +119,9 @@
 }
 .count-message {
     margin-bottom: 20px;
+}
+.page-img__photo-description {
+    width: 300px;
 }
 }
 
@@ -223,6 +229,26 @@
 .count-message {
     margin-bottom: 20px;
 }
+.page-img__photo-description {
+    width: 440px;
+}
+   /* add.php */
+   .photo-edit__canvas {
+    width: 420px;
+    height: 420px;
+}  
+.photo-upload p
+{
+    font-size: 14px;
+}
+.photo-carousel div {
+    min-width: 160px;
+}
+.photo-filters .photo-carousel img,
+.photo-stickers .photo-carousel img {
+    height: 140px;
+}
+
 }
 
 @media screen and (min-width: 0) and (max-width: 479px) {
@@ -376,22 +402,29 @@
     .count-message {
         margin-bottom: 20px;
     }
+    .page-img__photo-description {
+        width: 300px;
+    }
+
+    /* add.php */
     .photo-edit__canvas {
         width: 300px;
         height: 300px;
-    }
-    .photo-upload {
-        flex-direction: column;
-        align-items: center;
-    }
-    .custom-file-upload {
-        width: 110px;
-    }
+    }  
     .photo-upload p
     {
         font-size: 14px;
     }
-    /* .custom-file-upload img {
-        margin-right: 15px;
-    } */
+    .photo-carousel div {
+        min-width: 160px;
+    }
+    .photo-filters .photo-carousel img,
+    .photo-stickers .photo-carousel img {
+        height: 140px;
+    }
+
+    .photo-edit .photo-dsc .span_photo
+{
+    left: 30px;
+}
 }

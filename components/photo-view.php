@@ -30,7 +30,7 @@
 
             </div>
 
-            <p class="page-img__photo-description"><?= htmlentities($row['description_photo']) ?></p>
+            <p class="page-img__photo-description"><?= $row['description_photo'] ?></p>
             <time><?= date("d M Y G:i", strtotime($row['created_at_photo'])) ?></time>
 
             <a class="page-img__photo-user" href="me.php?user=<?= htmlentities($row['name']) ?>&page=1&posts">

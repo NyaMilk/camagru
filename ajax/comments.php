@@ -13,7 +13,7 @@ if (isset($_POST['comment'])) /* valid */ {
     $stmt->execute(array(
         ':uid' => $_SESSION['user_id'],
         ':iid' => $_SESSION['img'],
-        ':cm' => nl2br(mb_substr(htmlentities($_POST['comment']), 0, 80))
+        ':cm' => nl2br(trim(mb_substr(htmlentities($_POST['comment']), 0, 80)))
         // ':cm' => nl2br(substr(htmlentities($_POST['comment']), 0, 80))
     ));
     /* mail  надо проверить*/
@@ -25,7 +25,7 @@ if (isset($_POST['comment'])) /* valid */ {
         $headers .= "From: amilyukovadev@gmail.com\r\n";
         $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_GET['img'] . '">photo</a></p>
         <blockquote>
-        <p>' . nl2br(htmlentities($_POST['comment'])) .'</p>
+        <p>' . htmlentities($_POST['comment']) .'</p>
         <cite>avtor: ' . $_SESSION['name'] .'</cite>
         </blockquote>';
         mail($email, $subject, $message, $headers);
