@@ -12,7 +12,7 @@
             if (this.readyState == 4 && this.status == 200) {
                 document.querySelector(".page-img__comments-list").innerHTML = this.responseText;
                 document.querySelectorAll(".btn-confirm-del").forEach(item => item.addEventListener("click", function() {
-                    let param = "commentID=" + this.id;
+                    let param = "com_id=" + this.id;
                     let xhttp;
 
                     xhttp = new XMLHttpRequest();
