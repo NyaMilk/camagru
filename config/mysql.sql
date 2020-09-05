@@ -103,9 +103,9 @@ INSERT INTO Stickers (path) VALUES
 INSERT INTO Filters (path) VALUES
 ("img/filters/1.png"),
 ("img/filters/2.png"),
-("img/filters/5.png"),
+("img/filters/3.png"),
 ("img/filters/4.png"),
-("img/filters/3.png");
+("img/filters/5.png");
 
 
 INSERT INTO Users (name, email, password, confirm) VALUES

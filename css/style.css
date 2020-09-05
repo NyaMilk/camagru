@@ -1063,7 +1063,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             position: relative;
             width: 600px;
             height: 600px;
-            margin: 25px auto;
+            margin: 10px auto;
         }
         
         .photo-edit #preview,
@@ -1139,7 +1139,6 @@ Firefox до версии 51 использует псевдоэлемент ::-
         }
         .photo-edit form {
             text-align: center;
-            margin-top: 25px;
         }
 
         .photo-edit #save_btn {
