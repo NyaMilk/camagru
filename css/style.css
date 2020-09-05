@@ -1032,7 +1032,8 @@ Firefox до версии 51 использует псевдоэлемент ::-
             font-weight: 700;
         }
         
-        .photo-edit input {
+        .photo-upload input,
+        #snapshot {
             display: none;
         }
         
@@ -1072,16 +1073,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             /* text-align: center; */
         }
         
-        .photo-filters {
-            margin: 15px 0;
-        }
-        
-        .photo-filters .photo-carousel img {
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-        }
-        
+        .photo-filters .photo-carousel img,
         .photo-stickers .photo-carousel img {
             height: 180px;
         }
@@ -1115,4 +1107,11 @@ Firefox до версии 51 использует псевдоэлемент ::-
             max-height: 100%;
             max-width: 100%;
             display: none;
+        }
+
+        .photo-filters h2,
+        .photo-stickers h2
+         {
+            margin: 25px 0;
+            text-transform: uppercase;
         }

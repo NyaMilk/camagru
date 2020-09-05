@@ -12,6 +12,17 @@
                 <p>Camera</p>
                 <input id="startbutton" type="button">
             </label>
+
+            <label class="custom-file-upload">
+                <img src="img/icon/shoot.svg" alt="from computer">
+                <p>Shoot</p>
+                <input id='shoot' type="button">
+            </label>
+
+            <label id="discard" class="custom-file-upload">
+                <img src="img/icon/filter.svg" alt="from camera">
+                <p>Clear</p>
+            </label>
         </div>
 
         <div class="photo-edit__canvas">
@@ -23,28 +34,9 @@
             <form><input type='button' id='snapshot' value="snapshot"></form>
         </div>
 
-        <div class="photo-upload">
-            
-            <label class="custom-file-upload">
-                <img src="img/icon/shoot.svg" alt="from computer">
-                <p>Shoot</p>
-                <input id='shoot' type="button">
-            </label>
-            <label class="custom-file-upload">
-                <img src="img/icon/save.svg" alt="from computer">
-                <p>Save</p>
-                <form method="post" enctype="multipart/form-data">
-                    <input id="save" name="src" type="hidden" value="img/preview.png">
-                    <input id="save_btn" name="save" type="submit" value="Save" disabled>
-                </form>
-            </label>
-            <label id="discard" class="custom-file-upload">
-                <img src="img/icon/filter.svg" alt="from camera">
-                <p>Clear</p>
-            </label>
-        </div>
 
         <div class="photo-filters">
+            <h2>filters</h2>
             <div class="photo-carousel">
                 <?php
                 $i = 0;
@@ -55,6 +47,7 @@
         </div>
 
         <div class="photo-stickers">
+            <h2>stickers</h2>
             <div id="stick" class="photo-carousel">
                 <?php
                 $i = 0;
@@ -63,6 +56,13 @@
                 ?>
             </div>
         </div>
+
+        <form method="post" enctype="multipart/form-data">
+            <input id="save" name="src" type="hidden" value="img/preview.png">
+            <input id="save_btn" class="btn-blue" name="save" type="submit" value="Save" disabled>
+            <input class="btn-gray" name="close" type="submit" value="Close">
+        </form>
+
     </div>
 </section>
 
