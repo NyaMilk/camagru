@@ -19,7 +19,6 @@ if (isset($_GET['hash']) && $_GET['hash']) {
             $_SESSION['success'] = "Your email address already confirmed.";
     } else
         $_SESSION['error'] = "Email address confirm error.";
-    // header('Location: index.php');
     header('Location: ../index.php');
     return;
 }

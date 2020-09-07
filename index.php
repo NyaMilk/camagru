@@ -9,24 +9,22 @@ if (isset($_SESSION['name']))
 }
 
 require_once 'util.php';
-
+flashMessages();
 
 if (isset($_POST['submit'])) {
-    $salt = 'XyZzy12*_';
-
-    if ($_POST['submit'] == 'Sign In') {
+       if ($_POST['submit'] == 'Sign In') {
         if (strlen($_POST['username']) == 0 || strlen($_POST['pass']) == 0) {
             $_SESSION['error'] = 'Username and password are required';
             header('Location: index.php');
             return;
         }
         $check = hash('sha512', $salt . $_POST['pass']);
-        $stmt = $pdo->prepare('SELECT * FROM Users WHERE name = :nm AND password = :pw');
+        $stmt = $pdo->prepare('SELECT user_id, name, confirm FROM Users WHERE name = :nm AND password = :pw');
         $stmt->execute(array(':nm' => $_POST['username'], ':pw' => $check));
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($row !== false) {
-            $_SESSION['name'] = $row['name'];
             $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['name'] = $row['name'];
             $_SESSION['confirm'] = $row['confirm'];
             if ($row['confirm'] == 'no')
                 deleteNotConfirmUser($pdo);
@@ -49,14 +47,7 @@ if (isset($_POST['submit'])) {
         $page = 'index.php';
         if (checkUserName($pdo, $page) == false)
             return;
-        $email = $_POST['email_up'];
-        $subject = 'Confirm email address';
         $hash = md5($_POST['username_up'] . time());
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        $headers .= "From: amilyukovadev@gmail.com\r\n";
-        $message = '<p>To complete the sign-up process please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $hash . '">link</a></p>';
-
         $stmt = $pdo->prepare('INSERT INTO Users (name, email, password, hash) VALUES (:nm, :em, :ps, :hs)');
         $stmt->execute(array(
             ':nm' => $_POST['username_up'],
@@ -65,8 +56,7 @@ if (isset($_POST['submit'])) {
             ':hs' => $hash
         ));
         $_SESSION['success'] = 'Profile added. You need to confirm the email address.';
-
-        mail($email, $subject, $message, $headers); /* проверка на ошибку? */
+        sendNotification('email_up', $hash, $page);
         header('Location: index.php');
         return;
     }
@@ -75,5 +65,3 @@ if (isset($_POST['submit'])) {
 require_once 'components/header.php';
 require_once 'components/login.php';
 require_once 'components/footer.php';
-
-flashMessages();

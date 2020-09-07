@@ -9,15 +9,12 @@ if (!isset($_SESSION['name'])) {
 }
 
 require_once 'util.php';
+require_once 'model/edit-model.php';
 
 flashMessages(); /* куда можно перенести? */
 
 if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_GET['user']) {
-    $salt = 'XyZzy12*_';
-
-    $stmt = $pdo->prepare('SELECT user_id, name, email, password, avatar, description_user, notification FROM Users WHERE name = :nm');
-    $stmt->execute(array(':nm' => $_GET['user']));
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = getUserData($pdo, $_GET['user']);
     if ($row !== false) {
         if ($row['notification'] == 'yes')
             $checked = 'checked';
@@ -29,13 +26,9 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                 $notific = 'yes';
             else
                 $notific = 'no';
-                
-            $stmt = $pdo->prepare('UPDATE Users SET notification = :nf WHERE user_id = :uid');
-            $stmt->execute(array(
-                ':nf' => $notific,
-                ':uid' => $_SESSION['user_id']
-            ));
-
+            
+            changeNotific($pdo, $notific, $_SESSION['user_id']);
+            
             if (strlen($_POST['username_up']) == 0 || strlen($_POST['email_up']) == 0) {
                 $_SESSION['error'] = 'Username and email are required';
                 header('Location: edit.php?user=' . $row['name']);
@@ -51,22 +44,11 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
             checkLenInput('description', $page, 'Description');
             if (strlen($_POST['pass_up']) > 0 || strlen($_POST['repass_up']) > 0) {
                 checkPassword($pdo, $page);
-                if (!isset($_SESSION['error'])) {
-                    $stmt = $pdo->prepare('UPDATE Users SET password = :ps WHERE user_id = :uid');
-                    $stmt->execute(array(
-                        ':ps' => hash('sha512', $salt . $_POST['repass_up']),
-                        ':uid' => $_SESSION['user_id']
-                    ));
-                }
+                if (!isset($_SESSION['error']))
+                    changePass($pdo,hash('sha512', $salt . $_POST['repass_up']), $_SESSION['user_id']);
             }
             if (!isset($_SESSION['error'])) {
-                $stmt = $pdo->prepare('UPDATE Users SET name = :nm, email = :em, description_user = :du WHERE user_id = :uid');
-                $stmt->execute(array(
-                    ':nm' => $_POST['username_up'],
-                    ':em' => $_POST['email_up'],
-                    ':du' => $_POST['description'],
-                    ':uid' => $_SESSION['user_id']
-                ));
+                updateAll($pdo, $_POST['username_up'], $_POST['email_up'], $_POST['description'], $_SESSION['user_id']);
                 $_SESSION['name'] = $_POST['username_up'];
 
                 $upload_dir = 'images/' . $row['user_id'];
@@ -78,15 +60,9 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
 
                 $tmp_name = $_FILES['ava']['tmp_name'];
                 $name = $upload_dir . '/' . date('HisdmY') . '_' . $row['user_id'] . '.png';
-                // basename() может предотвратить атаку на файловую систему;
-                // может быть целесообразным дополнительно проверить имя файла
                 $move = move_uploaded_file($tmp_name, $name);
                 if ($move) {
-                    $stmt = $pdo->prepare('UPDATE Users SET avatar = :av WHERE user_id = :uid');
-                    $stmt->execute(array(
-                        ':av' => $name,
-                        ':uid' => $_SESSION['user_id']
-                    ));
+                    updateAva($pdo, $name, $_SESSION['user_id']);
                     if (isset($row['avatar']) && $row['avatar'] && $row['avatar'] != 'img/icon/user.svg')
                         unlink($row['avatar']);
                 }

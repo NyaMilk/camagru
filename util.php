@@ -1,6 +1,8 @@
 <?php
 require_once 'config/pdo.php';
 
+$salt = 'XyZzy12*_';
+
 function flashMessages()
 {
     if (isset($_SESSION['error'])) {
@@ -98,12 +100,16 @@ function checkPassword($pdo, $page)
 
 function deleteNotConfirmUser($pdo)
 {
-    $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
-    // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
+    // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
+    $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
     if ($stmt->rowCount()) {
         $_SESSION['error'] = "TimeOut"; /* ошибку описать */
-        session_destroy();
+        unset($_SESSION['user_id']);
+        unset($_SESSION['name']);
+        unset($_SESSION['confirm']);
+        return true;
     }
+    return false;
 }
 
 function checkConfirmUser($pdo)
@@ -167,20 +173,23 @@ function paginationList($pageName, $pages, $text = null)
     echo '</div>';
 }
 
-function countLikes($pdo)
+function sendNotification($value, $elem, $page)
 {
-    $stmt = $pdo->prepare('SELECT * FROM Likes WHERE img_id = :iid');
-    $stmt->execute(array(
-        ':iid' => $_SESSION['img']
-    ));
+    $headers = "MIME-Version: 1.0\r\n";
+    $headers .= "Content-type: text/html; charset=utf-8\r\n";
+    $headers .= "From: amilyukovadev@gmail.com\r\n";
 
-    $count = $stmt->rowCount();
-
-    $stmt = $pdo->prepare('UPDATE Photo SET likes = :c WHERE img_id = :iid');
-    $stmt->execute(array(
-        ':c' => $count,
-        ':iid' => $_SESSION['img']
-    ));
+    if ($page == 'index.php') {
+        $email = $_POST[$value];
+        $subject = 'Confirm email address';
+        $message = '<p>To complete the sign-up process, please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $elem . '">link</a></p>.';
+    } elseif ($page == 'remind.php') {
+        $email = $value;
+        $subject = 'Remind username and password';
+        $message = '<p>Your username: ' . htmlentities($elem) . '</p>';
+        $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($elem) . '">link</a></p>';
+    }
+    mail($email, $subject, $message, $headers);
 }
 
 function changeNumber($nb)

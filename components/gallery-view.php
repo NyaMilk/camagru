@@ -12,8 +12,7 @@
                 echo '<p class="count-message">No photos t.t</p>';
             else {
                 for ($i = 1; $i <= $offset; $i++) {
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                    if ($row !== false)
+                    if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
                         echo '<a class="photo__link" href="photo.php?img=' . htmlentities($row['img_id']) . '">' . '<img class="gallery_item" src="' . htmlentities($row['path']) . '" ></a>' . "\n";
                 }
             }
@@ -22,12 +21,4 @@
     </div>
 </section>
 
-<script>
-    let item = document.forms['gallery_sort'].elements['sort'];
-    for (let i = 0; i < item.length; i++) {
-        item[i].onclick = function() {
-            window.location.href = "gallery.php?sort=" + this.value + "&page=1";
-        };
-
-    }
-</script>
+<script src="js/gallery.js"></script>
