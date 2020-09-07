@@ -17,35 +17,6 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     return;
 }
 
-if (isset($_POST['likes'])) {
-    $stmt = $pdo->prepare('SELECT * FROM Likes WHERE user_id = :uid AND img_id = :iid');
-    $stmt->execute(array(
-        ':uid' => $_SESSION['user_id'],
-        ':iid' => $_GET['img']
-    ));
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    // $src = '../img/valentines-heart.svg';
-    if ($row === false) {
-        $stmt = $pdo->prepare('INSERT INTO Likes (user_id, img_id) VALUES (:uid, :iid)');
-        $stmt->execute(array(
-            ':uid' => $_SESSION['user_id'],
-            ':iid' => $_GET['img']
-        ));
-
-        countLikes($pdo);
-    } else {
-        $stmt = $pdo->prepare('DELETE FROM Likes WHERE user_id = :uid AND img_id = :iid');
-        $stmt->execute(array(
-            ':uid' => $_SESSION['user_id'],
-            ':iid' => $_GET['img']
-        ));
-
-        countLikes($pdo);
-    }
-    header('Location: photo.php?img=' . $_GET['img']);
-    return;
-}
-
 /* можно сделать еще проверку на пользователя чтоб без накрутки */
 $stmt = $pdo->prepare('SELECT * FROM Views WHERE img_id = :iid AND date_views = CURDATE()');
 $stmt->execute(array(':iid' => $_GET['img']));
@@ -67,16 +38,6 @@ $stmt->execute(array(':iid' => $_GET['img']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $_SESSION['img'] = $_GET['img'];
-/* повторение запроса */
-$stmt = $pdo->prepare('SELECT * FROM Likes WHERE user_id = :uid AND img_id = :iid');
-$stmt->execute(array(
-    ':uid' => $_SESSION['user_id'],
-    ':iid' => $_GET['img']
-));
-if ($likes = $stmt->fetch(PDO::FETCH_ASSOC))
-    $src = '../img/icon/valentines-heart1.svg';
-else
-    $src = '../img/icon/valentines-heart.svg'; /* - - - */
 
 require_once "components/header.php";
 require_once "components/photo-view.php";

@@ -164,4 +164,4 @@ INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/th.jpg');
 INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/tw.jpg');
 
 INSERT INTO Users (name, email, password, confirm) VALUES ('test', 'test@test.ru', SHA2('XyZzy12*_123', 512), 'yes');
-INSERT INTO Users (name, email, password, confirm) VALUES ('kus', 'nyamilk@yandex.ru', SHA2('XyZzy12*_1', 512), 'yes');
+-- INSERT INTO Users (name, email, password, confirm) VALUES ('kus', 'nyamilk@yandex.ru', SHA2('XyZzy12*_1', 512), 'yes');

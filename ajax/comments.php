@@ -13,10 +13,9 @@ if (isset($_POST['comment'])) /* valid */ {
     $stmt->execute(array(
         ':uid' => $_SESSION['user_id'],
         ':iid' => $_SESSION['img'],
-        ':cm' => nl2br(trim(mb_substr(htmlentities($_POST['comment']), 0, 80)))
+        ':cm' => nl2br(trim(mb_substr(htmlentities($_POST['comment']), 0, 3)))
         // ':cm' => nl2br(substr(htmlentities($_POST['comment']), 0, 80))
     ));
-    /* mail  надо проверить*/
     if ($row['notification'] == 'yes') {
         $email = $row['email'];
         $subject = 'New comment';

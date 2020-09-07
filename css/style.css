@@ -75,6 +75,11 @@ Firefox до версии 51 использует псевдоэлемент ::-
             background: #2cb8b1;
             border: 2px solid #2cb8b1;
         }
+
+        .btn-save {
+            background: #E6E7ED;
+            border: 2px solid #E6E7ED;
+        }
         
         .btn-gray {
             background: #555;
@@ -772,6 +777,11 @@ Firefox до версии 51 использует псевдоэлемент ::-
             margin-top: 15px;
             border-radius: 25px;
             font-family: inherit;
+        }
+
+        .page-img__comments-set__form .photo-com
+        {
+            display: contents;
         }
         
         .page-img__comments-set__form .span_comment {

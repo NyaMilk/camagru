@@ -16,7 +16,7 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
     $salt = 'XyZzy12*_';
 
     $stmt = $pdo->prepare('SELECT user_id, name, email, password, avatar, description_user, notification FROM Users WHERE name = :nm');
-    $stmt->execute(array(':nm' => $_GET['user'])); /* из сессии мб? */
+    $stmt->execute(array(':nm' => $_GET['user']));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
         if ($row['notification'] == 'yes')
@@ -29,13 +29,13 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
                 $notific = 'yes';
             else
                 $notific = 'no';
+                
             $stmt = $pdo->prepare('UPDATE Users SET notification = :nf WHERE user_id = :uid');
             $stmt->execute(array(
                 ':nf' => $notific,
                 ':uid' => $_SESSION['user_id']
             ));
 
-            // if (empty($_POST['username_up']) || empty($_POST['email'])) {
             if (strlen($_POST['username_up']) == 0 || strlen($_POST['email_up']) == 0) {
                 $_SESSION['error'] = 'Username and email are required';
                 header('Location: edit.php?user=' . $row['name']);

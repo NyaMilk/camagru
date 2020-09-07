@@ -93,7 +93,7 @@
                 </label>
 
                 <input type="hidden" name="profile_id" value="<?= htmlentities($row['user_id']) ?>">
-                <input type="submit" name="submit" class="edit-page__btn btn-blue" value="Save">
+                <input type="submit" name="submit" class="edit-page__btn btn-blue btn-save" value="Save">
                 <input type="submit" name="submit" class="edit-page__btn btn-gray" value="Cancel">
             </div>
         </form>

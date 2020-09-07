@@ -5,17 +5,9 @@ if (session_status() == PHP_SESSION_NONE)
 require_once "util.php";
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
-    $stmt = $pdo->prepare('SELECT confirm FROM Users WHERE name = :nm');
-    $stmt->execute(array(':nm' => $_SESSION['name']));
-    if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
-        if ($row['confirm'] == 'yes')
-            $_SESSION['confirm'] = $row['confirm']; /* без обновления? */
-    $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
-    // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
-    if ($stmt->rowCount()) {
-        $_SESSION['error'] = "TimeOut"; /* ошибку описать */
-        unset($_SESSION['name']);
-        unset($_SESSION['user_id']);
+
+    if (checkConfirmUser($pdo) == false) {
+        deleteNotConfirmUser($pdo);
         header('Location: index.php');
         return;
     }

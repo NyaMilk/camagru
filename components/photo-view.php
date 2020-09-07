@@ -3,16 +3,16 @@
         <div class="page-img__photo">
             <div class="page-img__photo-block">
                 <img src="<?= htmlentities($row['path']) ?>">
-                <form class="page-img__photo-likes" method="post">
+                <div class="page-img__photo-likes">
                     <button type="submit" name="likes">
-                        <img class="photo-like" src="<?= $src ?>" alt="like">
+                        <img class="photo-like" src="img/icon/valentines-heart.svg" alt="like">
                     </button>
-                </form>
+                </div>
             </div>
 
             <div class="page-img__photo-info">
                 <p><span><?= htmlentities(changeNumber($view['views'])) ?></span> Views</p>
-                <p><span><?= htmlentities(changeNumber($row['likes'])) ?></span> Likes</p>
+                <p><span id="likes"></span> Likes</p>
 
                 <div>
                     <p>Share:</p>

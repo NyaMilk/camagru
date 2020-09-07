@@ -66,7 +66,7 @@
             </div>
 
             <input id="save" name="src" type="hidden" value="img/preview.png">
-            <input id="save_btn" class="btn-blue" name="save" type="submit" value="Save" disabled>
+            <input id="save_btn" class="btn-blue btn-save" name="save" type="submit" value="Save" disabled>
             <input class="btn-gray" name="close" type="submit" value="Close">
         </form>
     </div>

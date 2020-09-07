@@ -13,18 +13,21 @@ function flashMessages()
     }
 }
 
-function checkLenInput($value, $page, $msg)
+function checkLenInput($value, $msg)
 {
-    if (isset($_POST[$value]) && strlen($_POST[$value]) > 3) {
+    if (isset($_POST[$value]) && strlen($_POST[$value]) > 80) {
         $_SESSION['error'] = $msg . ' must be no more than 80 characters';
-        header('Location: ' . $page);
-        return;
+        return false;
     }
+    return true;
 }
 
 function checkUserName($pdo, $page)
 {
-    checkLenInput('username_up', $page, 'Username');
+    if (checkLenInput('username_up', 'Username') == false) {
+        header('Location: ' . $page);
+        return false;
+    }
 
     $stmt = $pdo->prepare('SELECT name FROM Users WHERE name = :nm');
     $stmt->execute(array(':nm' => $_POST['username_up']));
@@ -32,32 +35,39 @@ function checkUserName($pdo, $page)
     if ($row !== false) {
         $_SESSION['error'] = 'That username is already taken';
         header('Location: ' . $page);
-        return;
+        return false;
     }
-
     if ($page == 'index.php')
         checkEmail($pdo, $page);
+    return true;
 }
 
 function checkEmail($pdo, $page)
 {
-    checkLenInput('email_up', $page, 'Email');
-    
+    if (!checkLenInput('email_up', 'Email')) {
+        header('Location: ' . $page);
+        return false;
+    }
+
     $stmt = $pdo->prepare('SELECT email FROM Users WHERE email = :em');
     $stmt->execute(array(':em' => $_POST['email_up']));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
         $_SESSION['error'] = 'That email address is already taken';
         header('Location: ' . $page);
-        return;
+        return false;
     }
     if ($page == 'index.php')
         checkPassword($pdo, $page);
+    return true;
 }
 
 function checkPassword($pdo, $page)
 {
-    checkLenInput('repass_up', $page, 'Password');
+    if (!checkLenInput('repass_up', 'Password')) {
+        header('Location: ' . $page);
+        return false;
+    }
 
     // if ((strlen($_POST['pass_up']) > 0 && strlen($_POST['pass_up'])) < 6
     // || (strlen($_POST['repass_up']) > 0 && strlen($_POST['repass_up']) < 6)) {
@@ -70,7 +80,7 @@ function checkPassword($pdo, $page)
         if ($_POST['pass_up'] != $_POST['repass_up']) {
             $_SESSION['error'] = 'Password do not match';
             header('Location: ' . $page);
-            return;
+            return false;
         }
     } else {
         $salt = 'XyZzy12*_';
@@ -80,8 +90,32 @@ function checkPassword($pdo, $page)
         if ($row === false) {
             $_SESSION['error'] = 'Wrong password';
             header('Location: ' . $page);
-            return;
+            return false;
         }
+    }
+    return true;
+}
+
+function deleteNotConfirmUser($pdo)
+{
+    $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
+    // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
+    if ($stmt->rowCount()) {
+        $_SESSION['error'] = "TimeOut"; /* ошибку описать */
+        session_destroy();
+    }
+}
+
+function checkConfirmUser($pdo)
+{
+    $stmt = $pdo->prepare('SELECT confirm FROM Users WHERE name = :nm');
+    $stmt->execute(array(':nm' => $_SESSION['name']));
+    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        if ($row['confirm'] == 'yes') {
+            $_SESSION['confirm'] = $row['confirm'];
+            return true;
+        }
+        return false;
     }
 }
 
@@ -137,7 +171,7 @@ function countLikes($pdo)
 {
     $stmt = $pdo->prepare('SELECT * FROM Likes WHERE img_id = :iid');
     $stmt->execute(array(
-        ':iid' => $_GET['img']
+        ':iid' => $_SESSION['img']
     ));
 
     $count = $stmt->rowCount();
@@ -145,7 +179,7 @@ function countLikes($pdo)
     $stmt = $pdo->prepare('UPDATE Photo SET likes = :c WHERE img_id = :iid');
     $stmt->execute(array(
         ':c' => $count,
-        ':iid' => $_GET['img']
+        ':iid' => $_SESSION['img']
     ));
 }
 

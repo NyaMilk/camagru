@@ -3,14 +3,18 @@ if (session_status() == PHP_SESSION_NONE)
     session_start();
 
 if (isset($_SESSION['name']))
+{
     header('Location: gallery.php?sort=all&page=1');
+    return;
+}
 
 require_once 'util.php';
+
 
 if (isset($_POST['submit'])) {
     $salt = 'XyZzy12*_';
 
-    if ($_POST['submit'] === 'Sign In') {
+    if ($_POST['submit'] == 'Sign In') {
         if (strlen($_POST['username']) == 0 || strlen($_POST['pass']) == 0) {
             $_SESSION['error'] = 'Username and password are required';
             header('Location: index.php');
@@ -20,22 +24,12 @@ if (isset($_POST['submit'])) {
         $stmt = $pdo->prepare('SELECT * FROM Users WHERE name = :nm AND password = :pw');
         $stmt->execute(array(':nm' => $_POST['username'], ':pw' => $check));
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
         if ($row !== false) {
             $_SESSION['name'] = $row['name'];
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['confirm'] = $row['confirm'];
-            if ($row['confirm'] == 'no') {
-                $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
-                // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
-                if ($stmt->rowCount()) {
-                    $_SESSION['error'] = "TimeOut"; /* ошибку описать */
-                    unset($_SESSION['name']);
-                    unset($_SESSION['user_id']);
-                    header('Location: index.php');
-                    return;
-                }
-            }
+            if ($row['confirm'] == 'no')
+                deleteNotConfirmUser($pdo);
             header('Location: gallery.php?sort=all&page=1');
             return;
         } else {
@@ -45,7 +39,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    if ($_POST['submit'] === 'Sign Up') {
+    if ($_POST['submit'] == 'Sign Up') {
         if (strlen($_POST['username_up']) == 0 || strlen($_POST['email_up']) == 0 || strlen($_POST['pass_up']) == 0 || strlen($_POST['repass_up']) == 0) {
             $_SESSION['error'] = 'All values are required';
             header('Location: index.php');
@@ -53,8 +47,8 @@ if (isset($_POST['submit'])) {
         }
 
         $page = 'index.php';
-        checkUserName($pdo, $page);
-
+        if (checkUserName($pdo, $page) == false)
+            return;
         $email = $_POST['email_up'];
         $subject = 'Confirm email address';
         $hash = md5($_POST['username_up'] . time());
@@ -71,9 +65,8 @@ if (isset($_POST['submit'])) {
             ':hs' => $hash
         ));
         $_SESSION['success'] = 'Profile added. You need to confirm the email address.';
-        
-        mail($email, $subject, $message, $headers); /* проверка на ошибку? */
 
+        mail($email, $subject, $message, $headers); /* проверка на ошибку? */
         header('Location: index.php');
         return;
     }
