@@ -25,6 +25,13 @@
 .page-img__photo-block {
     height: 400px;
 }
+.page-img__photo-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+
+    height: 110px;
+}
 .page-img__comments {
     left: 460px;
 }
@@ -44,6 +51,10 @@
 }
 .page-img__photo-description {
     width: 400px;
+}
+.page-img__comments-set__form .span_comment
+{
+    left:15%
 }
 }
 

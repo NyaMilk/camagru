@@ -776,9 +776,10 @@ Firefox до версии 51 использует псевдоэлемент ::-
         
         .page-img__comments-set__form .span_comment {
             top: -15px;
+            left: 20%;
         }
 
-        .page-img__comments-set__form .span_comment,
+        .page-img__comments-set__form .photo-com .span_comment,
         .photo-edit .photo-dsc .span_photo {
             visibility: hidden;
             position: absolute;
@@ -787,11 +788,9 @@ Firefox до версии 51 использует псевдоэлемент ::-
             text-align: center;
             border-radius: 25px;
             padding: 15px 20px;
-            
-            left: 35%;
         }
         
-        .page-img__comments-set__form .span_comment::after,
+        .page-img__comments-set__form .photo-com .span_comment::after,
         .photo-edit .photo-dsc .span_photo::after {
             content: "";
             position: absolute;
@@ -803,7 +802,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             border-color: #999 transparent transparent transparent;
         }
         
-        .page-img__comments-set__form:hover .span_comment,
+        .page-img__comments-set__form .photo-com:hover .span_comment,
         .photo-edit .photo-dsc:hover .span_photo {
             visibility: visible;
         }
@@ -814,6 +813,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
         }
         .photo-edit .photo-dsc .span_photo {
             top: -60px;
+            left: 35%;
         }
         /* media-query */
         
@@ -1063,7 +1063,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             position: relative;
             width: 600px;
             height: 600px;
-            margin: 10px auto;
+            margin: 25px auto;
         }
         
         .photo-edit #preview,
@@ -1139,6 +1139,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
         }
         .photo-edit form {
             text-align: center;
+            margin-top: 25px;
         }
 
         .photo-edit #save_btn {

@@ -45,8 +45,11 @@
             <div class="page-img__comments-set">
                 <h2>Comments</h2>
                 <div class="page-img__comments-set__form">
-                    <span class="span_comment">No more than 80 characters</span>
-                    <textarea id="text" name="text_comment" rows="1" placeholder="Leave a comment"></textarea>
+                    <div class="photo-com">
+                        <span class="span_comment">No more than 80 characters</span>
+                        <textarea id="text" name="text_comment" rows="1" placeholder="Leave a comment"></textarea>
+                    </div>
+                    
                     <button class="btn-blue btn-save" type="submit">Send</button>
                 </div>
             </div>

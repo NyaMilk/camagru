@@ -10,6 +10,8 @@ if (!isset($_SESSION['name'])) {
 
 require_once 'util.php';
 
+flashMessages(); /* куда можно перенести? */
+
 if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_GET['user']) {
     $salt = 'XyZzy12*_';
 
@@ -46,6 +48,7 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
             }
             if ($_POST['email_up'] != $row['email'])
                 checkEmail($pdo, $page);
+            checkLenInput('description', $page, 'Description');
             if (strlen($_POST['pass_up']) > 0 || strlen($_POST['repass_up']) > 0) {
                 checkPassword($pdo, $page);
                 if (!isset($_SESSION['error'])) {
@@ -96,8 +99,11 @@ if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_G
 } else
     header('Location: index.php');
 
+    
 require_once 'components/header.php';
 require_once 'components/edit-view.php';
 require_once 'components/footer.php';
 
-flashMessages();
+
+
+

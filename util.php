@@ -13,8 +13,19 @@ function flashMessages()
     }
 }
 
+function checkLenInput($value, $page, $msg)
+{
+    if (isset($_POST[$value]) && strlen($_POST[$value]) > 3) {
+        $_SESSION['error'] = $msg . ' must be no more than 80 characters';
+        header('Location: ' . $page);
+        return;
+    }
+}
+
 function checkUserName($pdo, $page)
 {
+    checkLenInput('username_up', $page, 'Username');
+
     $stmt = $pdo->prepare('SELECT name FROM Users WHERE name = :nm');
     $stmt->execute(array(':nm' => $_POST['username_up']));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -23,12 +34,15 @@ function checkUserName($pdo, $page)
         header('Location: ' . $page);
         return;
     }
+
     if ($page == 'index.php')
         checkEmail($pdo, $page);
 }
 
 function checkEmail($pdo, $page)
 {
+    checkLenInput('email_up', $page, 'Email');
+    
     $stmt = $pdo->prepare('SELECT email FROM Users WHERE email = :em');
     $stmt->execute(array(':em' => $_POST['email_up']));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -43,12 +57,15 @@ function checkEmail($pdo, $page)
 
 function checkPassword($pdo, $page)
 {
+    checkLenInput('repass_up', $page, 'Password');
+
     // if ((strlen($_POST['pass_up']) > 0 && strlen($_POST['pass_up'])) < 6
     // || (strlen($_POST['repass_up']) > 0 && strlen($_POST['repass_up']) < 6)) {
     //     $_SESSION['error'] = 'Password must be at least 6 characters long';
     //     header('Location: ' . $page);
     //     return;
     // }
+
     if ($page == 'index.php') {
         if ($_POST['pass_up'] != $_POST['repass_up']) {
             $_SESSION['error'] = 'Password do not match';
