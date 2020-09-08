@@ -20,14 +20,14 @@ function getSumLikes($pdo, $userId)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function getSumPosts($pdo, $userId)
+function getCountPosts($pdo, $userId)
 {
     $stmt = $pdo->prepare('SELECT user_id FROM Photo WHERE user_id = :uid');
     $stmt->execute(array(':uid' => $userId));
     return $stmt->rowCount();
 }
 
-function getPhotos($pdo, $limit, $offset = null)
+function getPosts($pdo, $limit, $offset = null)
 {
     $sql = 'SELECT img_id, path FROM Photo WHERE user_id = :uid ORDER BY created_at_photo DESC ';
     if ($offset)
@@ -37,17 +37,16 @@ function getPhotos($pdo, $limit, $offset = null)
     return $pdo->prepare($sql);
 }
 
-function getFavorites($pdo, $userId)
+function getCountFavorites($pdo, $userId)
 {
-    $sql_like = 'SELECT l.img_id, p.path FROM Likes l JOIN Photo p WHERE l.user_id = :uid AND l.img_id = p.img_id';
-    $stmt = $pdo->prepare($sql_like);
+    $stmt = $pdo->prepare('SELECT img_id FROM Likes WHERE user_id = :uid');
     $stmt->execute(array(':uid' => $userId));
     return $stmt->rowCount();
 }
 
-function getLikes($pdo, $limit, $offset = null)
+function getFavorites($pdo, $limit, $offset = null)
 {
-    $sql = 'SELECT l.img_id, p.path FROM Likes l JOIN Photo p WHERE l.user_id = :uid AND l.img_id = p.img_id';
+    $sql = 'SELECT l.img_id, p.path FROM Likes l JOIN Photo p WHERE l.user_id = :uid AND l.img_id = p.img_id ORDER BY l.created_at_like DESC ';
     if ($offset)
         $sql = $sql . ' LIMIT ' . ($limit - $offset) . ', ' . $limit;
     else

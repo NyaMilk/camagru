@@ -1,6 +1,6 @@
 <?php
 
-function getImgId($pdo, $offset)
+function getPages($pdo, $offset)
 {
     $stmt = $pdo->query('SELECT img_id FROM Photo');
     return ceil($stmt->rowCount() / $offset);

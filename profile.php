@@ -30,7 +30,7 @@ if ($row !== false) {
     if (!$likes['likes'])
         $likes['likes'] = 0;
 
-    $posts = getSumPosts($pdo, $row['user_id']);
+    $posts = getCountPosts($pdo, $row['user_id']);
     $offset = 6;
     $pages = ceil(($posts + 1) / $offset);
     if ($posts) {
@@ -39,28 +39,28 @@ if ($row !== false) {
             if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
                 $limit--;
                 if ($_GET['page'] == 1) {
-                    $photos = getPhotos($pdo, $limit);
+                    $photos = getPosts($pdo, $limit);
                     $flag = 1;
                 } else
-                    $photos = getPhotos($pdo, $limit, $offset);
+                    $photos = getPosts($pdo, $limit, $offset);
             } else
-                $photos = getPhotos($pdo, $limit, $offset);
+                $photos = getPosts($pdo, $limit, $offset);
             $photos->execute(array(':uid' => $row['user_id']));
         }
     }
 
-    $favorites = getFavorites($pdo, $row['user_id']);
+    $favorites = getCountFavorites($pdo, $row['user_id']);
     $pages_likes = ceil($favorites / $offset);
     if ($favorites) {
         if ($_GET['page'] > 0 && $_GET['page'] <= $pages_likes) {
             $limit = $offset * $_GET['page'];
             if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
                 if ($_GET['page'] == 1) {
-                    $photo_likes = getLikes($pdo, $limit);
+                    $photo_likes = getFavorites($pdo, $limit);
                 } else
-                    $photo_likes = getLikes($pdo, $limit, $offset);
+                    $photo_likes = getFavorites($pdo, $limit, $offset);
             } else
-                $photo_likes = getLikes($pdo, $limit, $offset);
+                $photo_likes = getFavorites($pdo, $limit, $offset);
             $photo_likes->execute(array(':uid' => $row['user_id']));
         }
     }

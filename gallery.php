@@ -18,7 +18,7 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 }
 
 $offset = 9;
-$pages = getImgId($pdo, $offset);
+$pages = getPages($pdo, $offset);
 if ($pages != 0) {
     if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages) {
         $limit = $offset * $_GET['page'];
