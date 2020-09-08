@@ -9,7 +9,7 @@ if (!isset($_SESSION['name'])) {
 }
 
 require_once "util.php";
-require_once "model/me-model.php";
+require_once "model/profile-model.php";
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     $_SESSION['error'] = 'Confirm your email address.';
@@ -20,20 +20,19 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 if (isset($_POST['delete'])) {
     if (isset($_POST['img_id']) && $_POST['img_id'] && $_SESSION['user_id']) {
         delPhoto($pdo, $_POST['img_id']);
-        header('Location: me.php?user=' . $_SESSION['name'] . '&page=1&posts');
+        header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
     }
 }
 
-$row = getUserId($pdo, $_GET['user']);
+$row = getUser($pdo, $_GET['user']);
 if ($row !== false) {
     $likes = getSumLikes($pdo, $row['user_id']);
     if (!$likes['likes'])
         $likes['likes'] = 0;
 
-    $posts = getPosts($pdo, $row['user_id']);
+    $posts = getSumPosts($pdo, $row['user_id']);
     $offset = 6;
     $pages = ceil(($posts + 1) / $offset);
-
     if ($posts) {
         if ($_GET['page'] > 0 && $_GET['page'] <= $pages) {
             $limit = $offset * $_GET['page'];
@@ -45,15 +44,12 @@ if ($row !== false) {
                 } else
                     $photos = getPhotos($pdo, $limit, $offset);
             } else
-            $photos = getPhotos($pdo, $limit, $offset);
+                $photos = getPhotos($pdo, $limit, $offset);
             $photos->execute(array(':uid' => $row['user_id']));
         }
-        // else
-        // header('Location: me.php?user=' . $_GET['user'] . '&page=1&posts');
     }
 
     $favorites = getFavorites($pdo, $row['user_id']);
-
     $pages_likes = ceil($favorites / $offset);
     if ($favorites) {
         if ($_GET['page'] > 0 && $_GET['page'] <= $pages_likes) {
@@ -67,16 +63,23 @@ if ($row !== false) {
                 $photo_likes = getLikes($pdo, $limit, $offset);
             $photo_likes->execute(array(':uid' => $row['user_id']));
         }
-        // else
-        // header('Location: me.php?user=' . $_GET['user'] . '&page=1&favorites'); /* - - - */
     }
-} else
-{
+} else {
     $_SESSION['error'] = 'Error profile. Please contact the site administrator.';
     header('Location: gallery.php?sort=all&page=1');
     return;
 }
 
 require_once "components/header.php";
-require_once "components/me-view.php";
+require_once "components/profile-view.php";
+
+$page = 'profile';
+if (isset($_GET['posts'])) {
+    $text = '&posts';
+} elseif (isset($_GET['favorites'])) {
+    $text = '&favorites';
+    $pages = $pages_likes;
+}
+paginationList($page, $pages, $text);
+
 require_once "components/footer.php";

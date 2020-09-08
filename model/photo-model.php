@@ -2,7 +2,7 @@
 
 function getView($pdo, $imgId)
 {
-    $stmt = $pdo->prepare('SELECT * FROM Views WHERE img_id = :iid AND date_views = CURDATE()');
+    $stmt = $pdo->prepare('SELECT img_id FROM Views WHERE img_id = :iid AND date_views = CURDATE()');
     $stmt->execute(array(':iid' => $imgId));
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -10,7 +10,7 @@ function getView($pdo, $imgId)
 function setView($pdo, $imgId)
 {
     $stmt = $pdo->prepare('INSERT INTO Views SET counter = 1, img_id = :iid, date_views = CURDATE()');
-    $stmt->execute(array(':iid' => $_GET['img']));
+    $stmt->execute(array(':iid' => $imgId));
 }
 
 function updateView($pdo, $imgId)

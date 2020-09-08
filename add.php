@@ -19,7 +19,7 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 }
 
 if (isset($_POST['close']) && $_POST['close']) {
-    header('Location: me.php?user=' . $_SESSION['name'] . '&page=1&posts');
+    header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
     return;
 }
 
@@ -34,7 +34,7 @@ if (isset($_POST['save']) && $_POST['save']) {
     file_put_contents($newSrc, file_get_contents($_POST['src']));
 
     addPhoto($pdo, $_SESSION['user_id'], $newSrc, htmlentities($_POST['text_photo']));
-    header('Location: me.php?user=' . $_SESSION['name'] . '&page=1&posts');
+    header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
 }
 
 $stmt_filters = getTools($pdo, "Filters");

@@ -18,7 +18,8 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     return;
 }
 
-/* можно сделать еще проверку на пользователя чтоб без накрутки */
+$_SESSION['img'] = $_GET['img'];
+
 $view = getView($pdo, $_GET['img']);
 if (empty($view))
     setView($pdo, $_GET['img']);
@@ -27,8 +28,6 @@ else
 
 $view = getSumViews($pdo, $_GET['img']);
 $row = getPhotoInfo($pdo, $_GET['img']);
-
-$_SESSION['img'] = $_GET['img'];
 
 require_once "components/header.php";
 require_once "components/photo-view.php";

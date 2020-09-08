@@ -26,6 +26,8 @@ if ($pages != 0) {
             $type = ' ORDER BY likes DESC';
         elseif ($_GET['sort'] == 'new')
             $type = ' ORDER BY created_at_photo DESC';
+        else
+            $type = null;
         $stmt = getSortImg($pdo, $type, $limit, $offset);
     } else
         header('Location: gallery.php?sort=all&page=1');

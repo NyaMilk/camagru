@@ -30,7 +30,7 @@
                     }
                     if (isset($_SESSION['name'])) {
                         if ($_SERVER['PHP_SELF'] == '/gallery.php')
-                            echo '<li><a href="me.php?user=' . $_SESSION['name'] . '&page=1&posts">Profile</a></li>';
+                            echo '<li><a href="profile.php?user=' . $_SESSION['name'] . '&page=1&posts">Profile</a></li>';
                         else
                             echo '<li><a href="gallery.php?sort=all&page=1">Gallery</a></li>';
                         echo '<li><a href="logout.php">Sign out</a></li>';

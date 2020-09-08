@@ -40,7 +40,7 @@ if ($comments > 0) {
         if ($comment !== false) {
             echo '<article>';
             echo '<div class="photo-user__block">';
-            echo '<a href="me.php?user=' . htmlentities($comment['name']) . '&page=1&posts">';
+            echo '<a href="profile.php?user=' . htmlentities($comment['name']) . '&page=1&posts">';
             echo '<img class="photo-user__block-img" src="' . htmlentities($comment['avatar']) . '">';
             echo '</a></div>';
             echo '<div class="page_info_user"><span>' . htmlentities($comment['name']) . '</span> '; /* проверить */

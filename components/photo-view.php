@@ -33,7 +33,7 @@
             <p class="page-img__photo-description"><?= $row['description_photo'] ?></p>
             <time><?= date("d M Y G:i", strtotime($row['created_at_photo'])) ?></time>
 
-            <a class="page-img__photo-user" href="me.php?user=<?= htmlentities($row['name']) ?>&page=1&posts">
+            <a class="page-img__photo-user" href="profile.php?user=<?= htmlentities($row['name']) ?>&page=1&posts">
                 <div class="photo-user__block">
                     <img class="photo-user__block-img" src="<?= htmlentities($row['avatar']) ?>">
                 </div>

@@ -188,13 +188,12 @@ function sendNotification($value, $elem, $page)
         $subject = 'Remind username and password';
         $message = '<p>Your username: ' . htmlentities($elem) . '</p>';
         $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($elem) . '">link</a></p>';
-    } elseif ($page == 'comments.php')
-    {
+    } elseif ($page == 'comments.php') {
         $email = $value;
         $subject = 'New comment';
-        $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_GET['img'] . '">photo</a></p>';
-        $message .= '<blockquote><p>' . htmlentities($elem) .'</p>';
-        $message .= '<cite>avtor: ' . $_SESSION['name'] .'</cite></blockquote>';
+        $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_SESSION['img'] . '">photo</a></p>';
+        $message .= '<blockquote><p>' . htmlentities($elem) . '</p>';
+        $message .= '<cite>avtor: ' . $_SESSION['name'] . '</cite></blockquote>';
     }
     mail($email, $subject, $message, $headers);
 }

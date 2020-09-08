@@ -1,7 +1,8 @@
 <?php
 
-function addPhoto($pdo, $userId, $newSrc, $desription) {
-    $stmt = $pdo->prepare("INSERT INTO Photo (user_id, path, description_photo) VALUES (:uid, :src, :dp)");
+function addPhoto($pdo, $userId, $newSrc, $desription)
+{
+    $stmt = $pdo->prepare('INSERT INTO Photo (user_id, path, description_photo) VALUES (:uid, :src, :dp)');
     $stmt->execute(array(
         ':uid' => $userId,
         ':src' => $newSrc,
@@ -9,7 +10,8 @@ function addPhoto($pdo, $userId, $newSrc, $desription) {
     ));
 }
 
-function getTools($pdo, $table) {
-    $stmt = "SELECT path FROM " . $table;
+function getTools($pdo, $table)
+{
+    $stmt = 'SELECT path FROM ' . $table;
     return $pdo->query($stmt);
 }

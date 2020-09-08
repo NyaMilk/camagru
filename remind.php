@@ -2,12 +2,17 @@
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 
+if (isset($_SESSION['name'])) {
+    header('Location: index.php');
+    return;
+}
+
 require_once 'util.php';
 require_once 'model/remind-model.php';
 
-if (isset($_POST['submit']) && $_POST['submit'] === 'Send') {
+if (isset($_POST['submit']) && $_POST['submit'] == 'Send') {
     $row = getEmail($pdo, $_POST['remind-email']);
-    if ($row === false) {
+    if ($row == false) {
         $_SESSION['error'] = 'Email address has not found';
         header('Location: remind.php');
         return;
@@ -22,7 +27,7 @@ if (isset($_POST['submit']) && $_POST['submit'] === 'Send') {
 if (isset($_POST['submit']) && $_POST['submit'] === 'Set new password') {
     /* прописать проверки как в index / проверки вынести в util */
     changePass($pdo, hash('sha512', $salt . $_POST['reset-pass']), $_GET['name']);
-    $_SESSION['success'] = 'Password has been changed successfully!'; 
+    $_SESSION['success'] = 'Password has been changed successfully!';
     header('Location: index.php');
     return;
 }

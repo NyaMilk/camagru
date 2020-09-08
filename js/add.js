@@ -14,6 +14,7 @@
     let discard = document.getElementById('discard');
     let save = document.getElementById('save');
     let save_btn = document.getElementById('save_btn');
+
     let file_upload = document.getElementById('file-upload');
 
     let snapchat = {
@@ -29,6 +30,10 @@
     function startup() {
         if (isInited)
             destroyFiltersAndStickers();
+        save_btn.disabled = true;
+        save_btn.style.background = "#E6E7ED";
+        save_btn.style.borderColor = "#E6E7ED";
+        save_btn.style.cursor = "auto";
         clear();
         navigator.mediaDevices.getUserMedia({
             video: true,
@@ -60,6 +65,10 @@
 
         shoot.addEventListener('click', function (ev) {
             takePicture();
+            save_btn.disabled = false;
+            save_btn.style.background = "#49D1CA";
+            save_btn.style.borderColor = "#49D1CA";
+            save_btn.style.cursor = "pointer";
             ev.preventDefault();
         }, false);
         shoot.removeAttribute('disabled');
@@ -253,6 +262,10 @@
                 document.getElementById('origin')
                     .setAttribute('src', e.target.result);
                 save.value = preview.src;
+                save_btn.disabled = false;
+                save_btn.style.background = "#49D1CA";
+                save_btn.style.borderColor = "#49D1CA";
+                save_btn.style.cursor = "pointer";
             };
             reader.readAsDataURL(this.files[0]);
             file_upload.value = "";

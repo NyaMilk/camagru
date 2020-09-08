@@ -6,9 +6,9 @@ function delPhoto($pdo, $imageId)
     $stmt->execute(array(':iid' => $imageId));
 }
 
-function getUserId($pdo, $login)
+function getUser($pdo, $login)
 {
-    $stmt = $pdo->prepare('SELECT * FROM Users WHERE name = :nm');
+    $stmt = $pdo->prepare('SELECT user_id, name, avatar, description_user FROM Users WHERE name = :nm');
     $stmt->execute(array(':nm' => $login));
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -20,16 +20,16 @@ function getSumLikes($pdo, $userId)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-function getPosts($pdo, $userId)
+function getSumPosts($pdo, $userId)
 {
-    $stmt = $pdo->prepare('SELECT * FROM Photo WHERE user_id = :uid');
+    $stmt = $pdo->prepare('SELECT user_id FROM Photo WHERE user_id = :uid');
     $stmt->execute(array(':uid' => $userId));
     return $stmt->rowCount();
 }
 
 function getPhotos($pdo, $limit, $offset = null)
 {
-    $sql = 'SELECT * FROM Photo WHERE user_id = :uid ORDER BY created_at_photo DESC ';
+    $sql = 'SELECT img_id, path FROM Photo WHERE user_id = :uid ORDER BY created_at_photo DESC ';
     if ($offset)
         $sql = $sql . ' LIMIT ' . ($limit - $offset) . ', ' . $limit;
     else
@@ -37,14 +37,16 @@ function getPhotos($pdo, $limit, $offset = null)
     return $pdo->prepare($sql);
 }
 
-function getFavorites($pdo, $userId) {
+function getFavorites($pdo, $userId)
+{
     $sql_like = 'SELECT l.img_id, p.path FROM Likes l JOIN Photo p WHERE l.user_id = :uid AND l.img_id = p.img_id';
     $stmt = $pdo->prepare($sql_like);
     $stmt->execute(array(':uid' => $userId));
     return $stmt->rowCount();
 }
 
-function getLikes($pdo, $limit, $offset = null) {
+function getLikes($pdo, $limit, $offset = null)
+{
     $sql = 'SELECT l.img_id, p.path FROM Likes l JOIN Photo p WHERE l.user_id = :uid AND l.img_id = p.img_id';
     if ($offset)
         $sql = $sql . ' LIMIT ' . ($limit - $offset) . ', ' . $limit;
