@@ -47,7 +47,7 @@
                 $photo = $photos->fetch(PDO::FETCH_ASSOC);
                 if ($photo !== false) {
                     if (isset($flag) && $flag == 1) {
-                        echo '<a class="profile-photos__link" href="add.php?user=' . htmlentities($row['name']) . '"><p class="profile-photos__link-img profile-addphoto__block"><img class="profile-addphoto" src="img/icon/plus.svg">Add photo</p></a>' . "\n";
+                        echo '<a class="profile-photos__link" href="add.php"><p class="profile-photos__link-img profile-addphoto__block"><img class="profile-addphoto" src="img/icon/plus.svg">Add photo</p></a>' . "\n";
                         $i++;
                         $flag = 0;
                     }
@@ -79,7 +79,7 @@
                 }
             }
         } elseif (isset($_GET['posts']) && $posts == 0 && isset($_SESSION['name']) && $_SESSION['name'] == $row['name'])
-            echo '<a class="profile-photos__link" href="add.php?user=' . htmlentities($row['name']) . '"><p class="profile-photos__link-img profile-addphoto__block"><img class="profile-addphoto" src="img/icon/plus.svg">Add photo</p></a>' . "\n";
+            echo '<a class="profile-photos__link" href="add.php"><p class="profile-photos__link-img profile-addphoto__block"><img class="profile-addphoto" src="img/icon/plus.svg">Add photo</p></a>' . "\n";
         elseif (isset($_GET['posts']) && $posts == 0)
             echo '<p class="count-message">No photos :C</p>';
 

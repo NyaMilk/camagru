@@ -477,7 +477,7 @@ Firefox до версии 51 использует псевдоэлемент ::-
             /* background: #080; */
             width: 100%;
             height: 100px;
-            margin: 25% 0 10px;
+            margin: 30% 0 10px;
         }
         
         .page_img_delete {

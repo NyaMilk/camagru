@@ -100,8 +100,8 @@ function checkPassword($pdo, $page)
 
 function deleteNotConfirmUser($pdo)
 {
-    // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
-    $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
+    $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
+    // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
     if ($stmt->rowCount()) {
         $_SESSION['error'] = "TimeOut"; /* ошибку описать */
         unset($_SESSION['user_id']);
@@ -188,6 +188,13 @@ function sendNotification($value, $elem, $page)
         $subject = 'Remind username and password';
         $message = '<p>Your username: ' . htmlentities($elem) . '</p>';
         $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($elem) . '">link</a></p>';
+    } elseif ($page == 'comments.php')
+    {
+        $email = $value;
+        $subject = 'New comment';
+        $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_GET['img'] . '">photo</a></p>';
+        $message .= '<blockquote><p>' . htmlentities($elem) .'</p>';
+        $message .= '<cite>avtor: ' . $_SESSION['name'] .'</cite></blockquote>';
     }
     mail($email, $subject, $message, $headers);
 }

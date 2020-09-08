@@ -3,6 +3,8 @@ if (session_status() == PHP_SESSION_NONE)
     session_start();
 
 require_once "util.php";
+require_once "model/gallery-model.php";
+flashMessages();
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 
@@ -15,18 +17,16 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
     }
 }
 
-$stmt = $pdo->query('SELECT img_id FROM Photo');
 $offset = 9;
-$pages = ceil($stmt->rowCount() / $offset);
-if ($stmt->rowCount() != 0) {
+$pages = getImgId($pdo, $offset);
+if ($pages != 0) {
     if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages) {
         $limit = $offset * $_GET['page'];
-        $sql = 'SELECT img_id, path FROM Photo';
         if ($_GET['sort'] == 'popular')
-            $sql = $sql . ' ORDER BY likes DESC';
+            $type = ' ORDER BY likes DESC';
         elseif ($_GET['sort'] == 'new')
-            $sql = $sql . ' ORDER BY created_at_photo DESC';
-        $stmt = $pdo->query($sql . ' LIMIT ' . ($limit - $offset) . ', ' . $limit);
+            $type = ' ORDER BY created_at_photo DESC';
+        $stmt = getSortImg($pdo, $type, $limit, $offset);
     } else
         header('Location: gallery.php?sort=all&page=1');
 }
@@ -38,5 +38,3 @@ $pageName = 'gallery';
 paginationList($pageName, $pages);
 
 require_once "components/footer.php";
-
-flashMessages();

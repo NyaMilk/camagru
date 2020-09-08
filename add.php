@@ -8,8 +8,15 @@ if (!isset($_SESSION['name'])) {
     return;
 }
 
-require_once "model/add-model.php";
 require_once "util.php";
+require_once "model/add-model.php";
+flashMessages();
+
+if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
+    $_SESSION['error'] = 'Confirm your email address.';
+    header('Location: gallery.php?sort=all&page=1');
+    return;
+}
 
 if (isset($_POST['close']) && $_POST['close']) {
     header('Location: me.php?user=' . $_SESSION['name'] . '&page=1&posts');
@@ -36,4 +43,3 @@ $stmt_stickers = getTools($pdo, "Stickers");
 require_once "components/header.php";
 require_once "components/add-view.php";
 require_once "components/footer.php";
-flashMessages();

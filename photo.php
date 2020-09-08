@@ -9,40 +9,27 @@ if (!isset($_SESSION['name'])) {
 }
 
 require_once 'util.php';
+require_once 'model/photo-model.php';
+flashMessages();
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
-    /* куда вывести ошибку? */
     $_SESSION['error'] = 'Confirm your email address.';
     header('Location: gallery.php?sort=all&page=1');
     return;
 }
 
 /* можно сделать еще проверку на пользователя чтоб без накрутки */
-$stmt = $pdo->prepare('SELECT * FROM Views WHERE img_id = :iid AND date_views = CURDATE()');
-$stmt->execute(array(':iid' => $_GET['img']));
-$view = $stmt->fetch(PDO::FETCH_ASSOC);
-if (empty($view)) {
-    $stmt = $pdo->prepare('INSERT INTO Views SET counter = 1, img_id = :iid, date_views = CURDATE()');
-    $stmt->execute(array(':iid' => $_GET['img']));
-} else {
-    $stmt = $pdo->prepare('UPDATE Views SET counter = counter + 1 WHERE img_id = :iid AND date_views = CURDATE()');
-    $stmt->execute(array(':iid' => $view['img_id']));
-}
-$stmt = $pdo->prepare('SELECT SUM(counter) views FROM Views WHERE img_id = :iid');
-$stmt->execute(array(':iid' => $_GET['img']));
-$view = $stmt->fetch(PDO::FETCH_ASSOC);
+$view = getView($pdo, $_GET['img']);
+if (empty($view))
+    setView($pdo, $_GET['img']);
+else
+    updateView($pdo, $view['img_id']);
 
-$stmt = $pdo->prepare('SELECT u.user_id, u.name, u.avatar, u.email, u.notification, p.likes, p.path, p.description_photo, p.created_at_photo
-FROM Users u JOIN Photo p ON u.user_id = p.user_id WHERE p.img_id = :iid');
-$stmt->execute(array(':iid' => $_GET['img']));
-$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$view = getSumViews($pdo, $_GET['img']);
+$row = getPhotoInfo($pdo, $_GET['img']);
 
 $_SESSION['img'] = $_GET['img'];
 
 require_once "components/header.php";
 require_once "components/photo-view.php";
 require_once "components/footer.php";
-
-flashMessages();
-
-

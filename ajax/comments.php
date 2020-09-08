@@ -17,17 +17,8 @@ if (isset($_POST['comment'])) /* valid */ {
         // ':cm' => nl2br(substr(htmlentities($_POST['comment']), 0, 80))
     ));
     if ($row['notification'] == 'yes') {
-        $email = $row['email'];
-        $subject = 'New comment';
-        $headers = "MIME-Version: 1.0\r\n";
-        $headers .= "Content-type: text/html; charset=utf-8\r\n";
-        $headers .= "From: amilyukovadev@gmail.com\r\n";
-        $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_GET['img'] . '">photo</a></p>
-        <blockquote>
-        <p>' . htmlentities($_POST['comment']) .'</p>
-        <cite>avtor: ' . $_SESSION['name'] .'</cite>
-        </blockquote>';
-        mail($email, $subject, $message, $headers);
+        $page = 'comments.php';
+        sendNotification($row['email'], $_POST['comment'], $page);
     }
     return;
 }

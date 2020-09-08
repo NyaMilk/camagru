@@ -9,6 +9,7 @@ if (isset($_SESSION['name']))
 }
 
 require_once 'util.php';
+require_once 'model/index-model.php';
 flashMessages();
 
 if (isset($_POST['submit'])) {
@@ -19,9 +20,7 @@ if (isset($_POST['submit'])) {
             return;
         }
         $check = hash('sha512', $salt . $_POST['pass']);
-        $stmt = $pdo->prepare('SELECT user_id, name, confirm FROM Users WHERE name = :nm AND password = :pw');
-        $stmt->execute(array(':nm' => $_POST['username'], ':pw' => $check));
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = checkUser($pdo, $_POST['username'], $check);
         if ($row !== false) {
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['name'] = $row['name'];
@@ -48,13 +47,7 @@ if (isset($_POST['submit'])) {
         if (checkUserName($pdo, $page) == false)
             return;
         $hash = md5($_POST['username_up'] . time());
-        $stmt = $pdo->prepare('INSERT INTO Users (name, email, password, hash) VALUES (:nm, :em, :ps, :hs)');
-        $stmt->execute(array(
-            ':nm' => $_POST['username_up'],
-            ':em' => $_POST['email_up'],
-            ':ps' => hash('sha512', $salt . $_POST['pass_up']),
-            ':hs' => $hash
-        ));
+        addUser($pdo, $_POST['username_up'], $_POST['email_up'], hash('sha512', $salt . $_POST['pass_up']), $hash);
         $_SESSION['success'] = 'Profile added. You need to confirm the email address.';
         sendNotification('email_up', $hash, $page);
         header('Location: index.php');

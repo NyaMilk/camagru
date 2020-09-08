@@ -10,8 +10,13 @@ if (!isset($_SESSION['name'])) {
 
 require_once 'util.php';
 require_once 'model/edit-model.php';
-
 flashMessages(); /* куда можно перенести? */
+
+if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
+    $_SESSION['error'] = 'Confirm your email address.';
+    header('Location: gallery.php?sort=all&page=1');
+    return;
+}
 
 if (isset($_SESSION['name']) && isset($_GET['user']) && $_SESSION['name'] == $_GET['user']) {
     $row = getUserData($pdo, $_GET['user']);

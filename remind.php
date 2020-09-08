@@ -3,29 +3,26 @@ if (session_status() == PHP_SESSION_NONE)
     session_start();
 
 require_once 'util.php';
+require_once 'model/remind-model.php';
 
 if (isset($_POST['submit']) && $_POST['submit'] === 'Send') {
-    $stmt = $pdo->prepare('SELECT name, email FROM Users WHERE email = :em');
-    $stmt->execute(array(':em' => $_POST['remind-email']));
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $row = getEmail($pdo, $_POST['remind-email']);
     if ($row === false) {
-        $_SESSION['error'] = 'Email address not found';
+        $_SESSION['error'] = 'Email address has not found';
         header('Location: remind.php');
         return;
     }
     $page = 'remind.php';
     sendNotification($row['email'], $row['name'], $page);
-    $_SESSION['success'] = 'Send'; /* написать нормально */
+    $_SESSION['success'] = 'Link to change pass has been sent to your mail.'; /* написать нормально */
     header('Location: index.php');
     return;
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] === 'Set new password') {
     /* прописать проверки как в index / проверки вынести в util */
-    $salt = 'XyZzy12*_';
-    $stmt = $pdo->prepare('UPDATE Users SET password = :ps WHERE name = :nm');
-    $stmt->execute(array(':ps' => hash('sha512', $salt . $_POST['reset-pass']), ':nm' => $_GET['name']));
-    $_SESSION['success'] = 'Password reset'; /* update / подумать бы над сообщениями */
+    changePass($pdo, hash('sha512', $salt . $_POST['reset-pass']), $_GET['name']);
+    $_SESSION['success'] = 'Password has been changed successfully!'; 
     header('Location: index.php');
     return;
 }
