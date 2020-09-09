@@ -59,8 +59,8 @@ function delComment($pdo, $comId)
 
 function getImageInfo($pdo, $imgId)
 {
-    $add_comm = $pdo->prepare('SELECT Comment.user_id, name, comment_id, comment, avatar  
-    FROM Comment JOIN Users ON Comment.user_id = Users.user_id WHERE img_id = :iid ORDER BY comment_id');
+    $add_comm = $pdo->prepare('SELECT c.user_id, name, comment_id, comment, avatar, created_at_comment
+    FROM Comment c JOIN Users u ON c.user_id = u.user_id WHERE img_id = :iid ORDER BY comment_id');
     $add_comm->execute(array(':iid' => $imgId));
     return $add_comm;
 }

@@ -58,6 +58,7 @@ if (isset($_POST['img']) && isset($_POST['get'])) {
         }
     } else
         echo '<p class="count-message">There is no comment yet</p>';
+    return;
 }
 
 if (isset($_POST['like']) && $_POST['like'] == 'get') {
@@ -72,6 +73,7 @@ if (isset($_POST['like']) && $_POST['like'] == 'get') {
 
     $json = json_encode($response);
     echo $json;
+    return;
 }
 
 if (isset($_POST['like']) && $_POST['like'] == 'set') {
@@ -92,4 +94,6 @@ if (isset($_POST['like']) && $_POST['like'] == 'set') {
 
     $json = json_encode($response);
     echo $json;
+    return;
 }
+header('Location: ../index.php');

@@ -38,6 +38,25 @@ function checkLenInput($value, $msg)
     }
     return true;
 }
+function validateInputName($value)
+{
+    $regex = '/^(?=[a-zA-Z0-9._]{6,80}$)(?!.*[_.]{2})[^_.].*[^_.]$/';
+    if (preg_match($regex, $value))
+        return true;
+    return false;
+}
+
+function validateInputPass($password)
+{
+    $uppercase = preg_match('/[A-Z]/', $password);
+    $lowercase = preg_match('/[a-z]/', $password);
+    $number = preg_match('/[0-9]/', $password);
+    $specialChars = preg_match('/[^\w]/', $password);
+
+    if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 6)
+        return false;
+    return true;
+}
 
 function checkUserName($pdo, $page)
 {
@@ -46,11 +65,17 @@ function checkUserName($pdo, $page)
         return false;
     }
 
+    if (!validateInputName($_POST['username_up'])) {
+        $_SESSION['error'] = 'This username is invalid. Username must contain 6-80 alphabet characters, . or _.';
+        header('Location: ' . $page);
+        return false;
+    }
+
     $stmt = $pdo->prepare('SELECT name FROM Users WHERE name = :nm');
     $stmt->execute(array(':nm' => trim($_POST['username_up'])));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
-        $_SESSION['error'] = 'That username is already taken';
+        $_SESSION['error'] = 'This username is already taken';
         header('Location: ' . $page);
         return false;
     }
@@ -67,11 +92,17 @@ function checkEmail($pdo, $page)
         return false;
     }
 
+    if (!filter_var($_POST['email_up'], FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = 'This email address is invalid';
+        header('Location: ' . $page);
+        return false;
+    }
+
     $stmt = $pdo->prepare('SELECT email FROM Users WHERE email = :em');
     $stmt->execute(array(':em' => trim($_POST['email_up'])));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
-        $_SESSION['error'] = 'That email address is already taken';
+        $_SESSION['error'] = 'This email address is already taken';
         header('Location: ' . $page);
         return false;
     }
@@ -88,12 +119,11 @@ function checkPassword($pdo, $page)
         return false;
     }
 
-    // if ((strlen($_POST['pass_up']) > 0 && strlen($_POST['pass_up'])) < 6
-    // || (strlen($_POST['repass_up']) > 0 && strlen($_POST['repass_up']) < 6)) {
-    //     $_SESSION['error'] = 'Password must be at least 6 characters long';
-    //     header('Location: ' . $page);
-    //     return;
-    // }
+    if (!validateInputPass($_POST['pass_up'])) {
+        $_SESSION['error'] = 'Password must be at least 6 characters in length and must include at least one upper case letter, one number, and one special character.';
+        header('Location: ' . $page);
+        return false;
+    }
 
     if ($page == 'index.php') {
         if ($_POST['pass_up'] != $_POST['repass_up']) {
