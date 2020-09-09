@@ -7,58 +7,64 @@ require_once "model/profile-model.php";
 
 
 if (checkSignIn()) {
-    if (isset($_POST['delete'])) {
-        if (isset($_POST['img_id']) && $_POST['img_id'] && $_SESSION['user_id']) {
-            delPhoto($pdo, $_POST['img_id']);
-            header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
+    if (isset($_GET['user']) && isset($_GET['page']) && (isset($_GET['posts']) || isset($_GET['favorites']))) {
+        if (isset($_POST['delete'])) {
+            if (isset($_POST['img_id']) && $_POST['img_id'] && $_SESSION['user_id']) {
+                delPhoto($pdo, $_POST['img_id']);
+                header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
+            }
         }
-    }
 
-    $row = getUser($pdo, $_GET['user']);
-    if ($row !== false) {
-        $likes = getSumLikes($pdo, $row['user_id']);
-        if (!$likes['likes'])
-            $likes['likes'] = 0;
+        $row = getUser($pdo, $_GET['user']);
+        if ($row !== false) {
+            $likes = getSumLikes($pdo, $row['user_id']);
+            if (!$likes['likes'])
+                $likes['likes'] = 0;
 
-        $posts = getCountPosts($pdo, $row['user_id']);
-        $offset = 6;
-        $pages = ceil(($posts + 1) / $offset);
-        if ($posts) {
-            if ($_GET['page'] > 0 && $_GET['page'] <= $pages) {
-                $limit = $offset * $_GET['page'];
-                if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
-                    $limit--;
-                    if ($_GET['page'] == 1) {
-                        $photos = getPosts($pdo, $limit);
-                        $flag = 1;
+            $posts = getCountPosts($pdo, $row['user_id']);
+            $offset = 6;
+            $pages = ceil(($posts + 1) / $offset);
+            if ($posts) {
+                if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages) {
+                    $limit = $offset * $_GET['page'];
+                    if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
+                        $limit--;
+                        if ($_GET['page'] == 1) {
+                            $photos = getPosts($pdo, $limit);
+                            $flag = 1;
+                        } else
+                            $photos = getPosts($pdo, $limit, $offset);
                     } else
                         $photos = getPosts($pdo, $limit, $offset);
+                    $photos->execute(array(':uid' => $row['user_id']));
                 } else
-                    $photos = getPosts($pdo, $limit, $offset);
-                $photos->execute(array(':uid' => $row['user_id']));
+                    header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
             }
-        }
 
-        $favorites = getCountFavorites($pdo, $row['user_id']);
-        $pages_likes = ceil($favorites / $offset);
-        if ($favorites) {
-            if ($_GET['page'] > 0 && $_GET['page'] <= $pages_likes) {
-                $limit = $offset * $_GET['page'];
-                if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
-                    if ($_GET['page'] == 1) {
-                        $photo_likes = getFavorites($pdo, $limit);
+            $favorites = getCountFavorites($pdo, $row['user_id']);
+            $pages_likes = ceil($favorites / $offset);
+            if ($favorites) {
+                if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages_likes) {
+                    $limit = $offset * $_GET['page'];
+                    if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
+                        if ($_GET['page'] == 1) {
+                            $photo_likes = getFavorites($pdo, $limit);
+                        } else
+                            $photo_likes = getFavorites($pdo, $limit, $offset);
                     } else
                         $photo_likes = getFavorites($pdo, $limit, $offset);
+                    $photo_likes->execute(array(':uid' => $row['user_id']));
                 } else
-                    $photo_likes = getFavorites($pdo, $limit, $offset);
-                $photo_likes->execute(array(':uid' => $row['user_id']));
+                    header('Location: profile.php?user=' . $_GET['user'] . '&page=1&favorites');
             }
+        } else {
+            $_SESSION['error'] = 'Error profile. Please contact the site administrator.';
+            header('Location: gallery.php?sort=all&page=1');
+            // return;
         }
-    } else {
-        $_SESSION['error'] = 'Error profile. Please contact the site administrator.';
-        header('Location: gallery.php?sort=all&page=1');
-        return;
-    }
+    } else
+        header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
+    // return;
 
     require_once "components/header.php";
     require_once "components/profile-view.php";

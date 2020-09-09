@@ -161,7 +161,8 @@ INSERT INTO Photo (user_id, path) VALUES
 ('3', 'img/test/test8.jpg'),
 ('3', 'img/test/test9.png');
 
-INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/th.jpg');
-INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/tw.jpg');
+-- INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/th.jpg');
+-- INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/tw.jpg');
 
 -- INSERT INTO Users (name, email, password, confirm) VALUES ('kus', 'nyamilk@yandex.ru', SHA2('XyZzy12*_1', 512), 'yes');
+-- INSERT INTO Users (name, email, password, confirm) VALUES ('test', 'test@test', SHA2('XyZzy12*_1', 512), 'no');

@@ -1,5 +1,6 @@
 <?php
 require_once 'config/pdo.php';
+require_once 'model/util-model.php';
 
 $salt = 'XyZzy12*_';
 
@@ -71,10 +72,7 @@ function checkUserName($pdo, $page)
         return false;
     }
 
-    $stmt = $pdo->prepare('SELECT name FROM Users WHERE name = :nm');
-    $stmt->execute(array(':nm' => trim($_POST['username_up'])));
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row !== false) {
+    if (getUserName($pdo, $_POST['username_up'])) {
         $_SESSION['error'] = 'This username is already taken';
         header('Location: ' . $page);
         return false;
@@ -98,10 +96,7 @@ function checkEmail($pdo, $page)
         return false;
     }
 
-    $stmt = $pdo->prepare('SELECT email FROM Users WHERE email = :em');
-    $stmt->execute(array(':em' => trim($_POST['email_up'])));
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row !== false) {
+    if (getEmail($pdo, trim($_POST['email_up']))) {
         $_SESSION['error'] = 'This email address is already taken';
         header('Location: ' . $page);
         return false;
@@ -133,10 +128,7 @@ function checkPassword($pdo, $page)
         }
     } else {
         $salt = 'XyZzy12*_';
-        $stmt = $pdo->prepare('SELECT name FROM Users WHERE password = :ps');
-        $stmt->execute(array(':ps' => hash('sha512', $salt . $_POST['pass_up'])));
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row === false) {
+        if (!getPassword($pdo, hash('sha512', $salt . $_POST['pass_up']))) {
             $_SESSION['error'] = 'Wrong password';
             header('Location: ' . $page);
             return false;
@@ -145,15 +137,11 @@ function checkPassword($pdo, $page)
     return true;
 }
 
-function deleteNotConfirmUser($pdo)
+function deleteNotConfirmUser($pdo, $name)
 {
-    $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 1 DAY)');
-    // $stmt = $pdo->query('DELETE FROM Users WHERE confirm = "no" AND created_at_user < (NOW() - INTERVAL 10 SECOND)');
-    if ($stmt->rowCount()) {
-        $_SESSION['error'] = "TimeOut"; /* ошибку описать */
-        unset($_SESSION['user_id']);
-        unset($_SESSION['name']);
-        unset($_SESSION['confirm']);
+    deleteUser($pdo);
+    if (!getUserName($pdo, $name)) {
+        session_destroy();
         return true;
     }
     return false;
@@ -161,9 +149,7 @@ function deleteNotConfirmUser($pdo)
 
 function checkConfirmUser($pdo)
 {
-    $stmt = $pdo->prepare('SELECT confirm FROM Users WHERE name = :nm');
-    $stmt->execute(array(':nm' => $_SESSION['name']));
-    if ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    if ($row = getConfirmInfo($pdo, $_SESSION['name'])) {
         if ($row['confirm'] == 'yes') {
             $_SESSION['confirm'] = $row['confirm'];
             return true;

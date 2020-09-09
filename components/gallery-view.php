@@ -8,7 +8,8 @@
 
         <div class="gallery_list">
             <?php
-            if ($stmt->rowCount() == 0)
+            // if ($stmt->rowCount() == 0)
+            if ($pages == 0)
                 echo '<p class="count-message">No photos t.t</p>';
             else {
                 for ($i = 1; $i <= $offset; $i++) {
