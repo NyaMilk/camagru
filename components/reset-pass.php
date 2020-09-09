@@ -4,7 +4,6 @@
             <p>Reset password.</p>
             <input type="password" name="reset-pass" placeholder="New password">
             <input type="password" name="reset-repass" placeholder="Repeat new password">
-            <!-- set new password -->
             <input type="submit" name="submit" class="btn-blue" value="Set new password">
         </form>
     </div>

@@ -1,3 +1,5 @@
+"use strict";
+
 (function () {
     let new_avatar = document.getElementById('new-avatar');
     let save_btn = document.querySelector(".btn-save");

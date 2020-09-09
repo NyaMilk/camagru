@@ -11,7 +11,7 @@ require_once 'util.php';
 require_once 'model/remind-model.php';
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'Send') {
-    $row = getEmail($pdo, $_POST['remind-email']);
+    $row = getEmail($pdo, trim($_POST['remind-email']));
     if ($row == false) {
         $_SESSION['error'] = 'Email address has not found';
         header('Location: remind.php');
@@ -24,7 +24,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Send') {
     return;
 }
 
-if (isset($_POST['submit']) && $_POST['submit'] === 'Set new password') {
+if (isset($_POST['submit']) && $_POST['submit'] == 'Set new password') {
     /* прописать проверки как в index / проверки вынести в util */
     changePass($pdo, hash('sha512', $salt . $_POST['reset-pass']), $_GET['name']);
     $_SESSION['success'] = 'Password has been changed successfully!';
@@ -33,10 +33,12 @@ if (isset($_POST['submit']) && $_POST['submit'] === 'Set new password') {
 }
 
 require_once 'components/header.php';
+
 if (isset($_GET['name']))
     require_once "components/reset-pass.php";
 else
     require_once "components/remind-page.php";
+    
 require_once "components/footer.php";
 
 flashMessages();

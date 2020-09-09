@@ -15,6 +15,21 @@ function flashMessages()
     }
 }
 
+function checkSignIn()
+{
+    if (!isset($_SESSION['name'])) {
+        $_SESSION['error'] = 'You must sign in the site.';
+        header('Location: index.php');
+        // return false;
+    }
+    if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
+        $_SESSION['error'] = 'Confirm your email address.';
+        header('Location: gallery.php?sort=all&page=1');
+        // return false;
+    }
+    return true;
+}
+
 function checkLenInput($value, $msg)
 {
     if (isset($_POST[$value]) && strlen($_POST[$value]) > 80) {
@@ -32,7 +47,7 @@ function checkUserName($pdo, $page)
     }
 
     $stmt = $pdo->prepare('SELECT name FROM Users WHERE name = :nm');
-    $stmt->execute(array(':nm' => $_POST['username_up']));
+    $stmt->execute(array(':nm' => trim($_POST['username_up'])));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
         $_SESSION['error'] = 'That username is already taken';
@@ -40,7 +55,8 @@ function checkUserName($pdo, $page)
         return false;
     }
     if ($page == 'index.php')
-        checkEmail($pdo, $page);
+        if (checkEmail($pdo, $page) == false)
+            return false;
     return true;
 }
 
@@ -52,7 +68,7 @@ function checkEmail($pdo, $page)
     }
 
     $stmt = $pdo->prepare('SELECT email FROM Users WHERE email = :em');
-    $stmt->execute(array(':em' => $_POST['email_up']));
+    $stmt->execute(array(':em' => trim($_POST['email_up'])));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row !== false) {
         $_SESSION['error'] = 'That email address is already taken';
@@ -60,7 +76,8 @@ function checkEmail($pdo, $page)
         return false;
     }
     if ($page == 'index.php')
-        checkPassword($pdo, $page);
+        if (checkPassword($pdo, $page) == false)
+            return false;
     return true;
 }
 
@@ -182,17 +199,18 @@ function sendNotification($value, $elem, $page)
     if ($page == 'index.php') {
         $email = $_POST[$value];
         $subject = 'Confirm email address';
-        $message = '<p>To complete the sign-up process, please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $elem . '">link</a></p>.';
+        $message = '<p>To complete the sign-up process, please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $elem . '">link.</a></p>';
     } elseif ($page == 'remind.php') {
         $email = $value;
         $subject = 'Remind username and password';
-        $message = '<p>Your username: ' . htmlentities($elem) . '</p>';
-        $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($elem) . '">link</a></p>';
+        $message = '<p>Your username: ' . htmlentities($elem) . '.</p>';
+        $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($elem) . '">link.</a></p>';
     } elseif ($page == 'comments.php') {
+        echo $elem['0'];
         $email = $value;
         $subject = 'New comment';
-        $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $_SESSION['img'] . '">photo</a></p>';
-        $message .= '<blockquote><p>' . htmlentities($elem) . '</p>';
+        $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $elem[1] . '">photo.</a></p>';
+        $message .= '<blockquote><p>' . htmlentities($elem[0]) . '</p>';
         $message .= '<cite>avtor: ' . $_SESSION['name'] . '</cite></blockquote>';
     }
     mail($email, $subject, $message, $headers);

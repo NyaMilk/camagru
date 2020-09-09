@@ -3,7 +3,7 @@
 include_once 'pdo.php';
 
 // exec('sudo mysql < config/add_user.sql');
-try {    
+try {
     if ($sql = file_get_contents('config/dump.sql')) {
         $pdo->exec($sql);
         echo "Database created successfully\n";
@@ -15,5 +15,3 @@ try {
 // PDO::setAttribute — Установка атрибута объекту PDO
 // PDO::ATTR_ERRMODE: Режим сообщений об ошибках.
 // PDO::ERRMODE_EXCEPTION: Выбрасывать исключения.
-
-// error_log

@@ -2,25 +2,25 @@
 if (session_status() == PHP_SESSION_NONE)
     session_start();
 
-if (isset($_SESSION['name']))
-{
+if (isset($_SESSION['name'])) {
     header('Location: gallery.php?sort=all&page=1');
     return;
 }
 
 require_once 'util.php';
 require_once 'model/index-model.php';
+
 flashMessages();
 
 if (isset($_POST['submit'])) {
-       if ($_POST['submit'] == 'Sign In') {
+    if ($_POST['submit'] == 'Sign In') {
         if (strlen($_POST['username']) == 0 || strlen($_POST['pass']) == 0) {
             $_SESSION['error'] = 'Username and password are required';
             header('Location: index.php');
             return;
         }
         $check = hash('sha512', $salt . $_POST['pass']);
-        $row = checkUser($pdo, $_POST['username'], $check);
+        $row = checkUser($pdo, trim($_POST['username']), $check);
         if ($row !== false) {
             $_SESSION['user_id'] = $row['user_id'];
             $_SESSION['name'] = $row['name'];
@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
         if (checkUserName($pdo, $page) == false)
             return;
         $hash = md5($_POST['username_up'] . time());
-        addUser($pdo, $_POST['username_up'], $_POST['email_up'], hash('sha512', $salt . $_POST['pass_up']), $hash);
+        addUser($pdo, trim($_POST['username_up']), trim($_POST['email_up']), hash('sha512', $salt . $_POST['pass_up']), $hash);
         $_SESSION['success'] = 'Profile added. You need to confirm the email address.';
         sendNotification('email_up', $hash, $page);
         header('Location: index.php');

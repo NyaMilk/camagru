@@ -1,10 +1,11 @@
+"use strict";
+
 (function () {
     let width = 900;
     let height = 0;
 
     let streaming = false;
     let isInited = false;
-    let i = 1;
 
     let photo = document.getElementById('origin');
     let preview = document.getElementById('preview');
@@ -22,6 +23,7 @@
         isClicked: false,
         stickers: []
     };
+
     let sticker_width = 100;
     let sticker_height = 100;
     let start_pos_x = 100;
@@ -255,8 +257,7 @@
             let reader = new FileReader();
             save_btn.removeAttribute("disabled");
             reader.onload = function (e) {
-                filter = "none";
-                sticker = null;
+                clear();
                 document.getElementById('preview')
                     .setAttribute('src', e.target.result);
                 document.getElementById('origin')

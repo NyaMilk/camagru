@@ -4,6 +4,7 @@ if (session_status() == PHP_SESSION_NONE)
 
 require_once "util.php";
 require_once "model/gallery-model.php";
+
 flashMessages();
 
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {

@@ -1,3 +1,5 @@
+"use strict";
+
 (function() {
     let item = document.forms['gallery_sort'].elements['sort'];
     

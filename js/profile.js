@@ -1,3 +1,5 @@
+"use strict";
+
 (function () {
     let page = window.location.href.split('&');
 

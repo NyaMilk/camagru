@@ -15,3 +15,19 @@ function changePass($pdo, $pass, $login)
         ':nm' => $login
     ));
 }
+
+function checkHash($pdo, $hash)
+{
+    $stmt = $pdo->prepare('SELECT user_id, confirm FROM Users WHERE hash = :hs');
+    $stmt->execute(array(':hs' => $hash));
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function changeConfirm($pdo, $uid)
+{
+    $stmt = $pdo->prepare('UPDATE Users SET confirm = :cf WHERE user_id = :uid');
+    $stmt->execute(array(
+        ':cf' => 'yes',
+        ':uid' => $uid
+    ));
+}
