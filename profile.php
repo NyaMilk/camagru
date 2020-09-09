@@ -5,7 +5,6 @@ if (session_status() == PHP_SESSION_NONE)
 require_once "util.php";
 require_once "model/profile-model.php";
 
-
 if (checkSignIn()) {
     if (isset($_GET['user']) && isset($_GET['page']) && (isset($_GET['posts']) || isset($_GET['favorites']))) {
         if (isset($_POST['delete'])) {
@@ -38,7 +37,10 @@ if (checkSignIn()) {
                         $photos = getPosts($pdo, $limit, $offset);
                     $photos->execute(array(':uid' => $row['user_id']));
                 } else
+                {
                     header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
+                    // return;
+                }
             }
 
             $favorites = getCountFavorites($pdo, $row['user_id']);
@@ -55,8 +57,23 @@ if (checkSignIn()) {
                         $photo_likes = getFavorites($pdo, $limit, $offset);
                     $photo_likes->execute(array(':uid' => $row['user_id']));
                 } else
+                {
                     header('Location: profile.php?user=' . $_GET['user'] . '&page=1&favorites');
+                    // return;
+                }
             }
+
+            require_once "components/header.php";
+            require_once "components/profile-view.php";
+            $page = 'profile';
+            if (isset($_GET['posts'])) {
+                $text = '&posts';
+            } elseif (isset($_GET['favorites'])) {
+                $text = '&favorites';
+                $pages = $pages_likes;
+            }
+            paginationList($page, $pages, $text);
+            require_once "components/footer.php";
         } else {
             $_SESSION['error'] = 'Error profile. Please contact the site administrator.';
             header('Location: gallery.php?sort=all&page=1');
@@ -65,18 +82,4 @@ if (checkSignIn()) {
     } else
         header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
     // return;
-
-    require_once "components/header.php";
-    require_once "components/profile-view.php";
-
-    $page = 'profile';
-    if (isset($_GET['posts'])) {
-        $text = '&posts';
-    } elseif (isset($_GET['favorites'])) {
-        $text = '&favorites';
-        $pages = $pages_likes;
-    }
-    paginationList($page, $pages, $text);
-
-    require_once "components/footer.php";
 }

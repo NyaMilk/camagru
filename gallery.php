@@ -10,8 +10,7 @@ flashMessages();
 if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 
     if (checkConfirmUser($pdo) == false) {
-        if (deleteNotConfirmUser($pdo))
-        {
+        if (deleteNotConfirmUser($pdo, $_SESSION['name'])) {
             header('Location: index.php');
             return;
         }
@@ -27,17 +26,15 @@ if ($pages != 0) {
             $type = ' ORDER BY likes DESC';
         elseif ($_GET['sort'] == 'new')
             $type = ' ORDER BY created_at_photo DESC';
-        // else
-        //     $type = null;
+        else
+            $type = null;
         $stmt = getSortImg($pdo, $type, $limit, $offset);
+
+        require_once "components/header.php";
+        require_once "components/gallery-view.php";
+        $pageName = 'gallery';
+        paginationList($pageName, $pages);
+        require_once "components/footer.php";
     } else
         header('Location: gallery.php?sort=all&page=1');
 }
-
-require_once "components/header.php";
-require_once "components/gallery-view.php";
-
-$pageName = 'gallery';
-paginationList($pageName, $pages);
-
-require_once "components/footer.php";

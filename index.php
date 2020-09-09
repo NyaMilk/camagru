@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['name'] = $row['name'];
             $_SESSION['confirm'] = $row['confirm'];
             if ($row['confirm'] == 'no')
-                deleteNotConfirmUser($pdo);
+                deleteNotConfirmUser($pdo, $_SESSION['name']);
             header('Location: gallery.php?sort=all&page=1');
             return;
         } else {

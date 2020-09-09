@@ -1,5 +1,11 @@
 <?php
 
+function getCountImg($pdo)
+{
+    $stmt = $pdo->query('SELECT img_id FROM Photo');
+    return $stmt->rowCount();
+}
+
 function getView($pdo, $imgId)
 {
     $stmt = $pdo->prepare('SELECT img_id FROM Views WHERE img_id = :iid AND date_views = CURDATE()');
