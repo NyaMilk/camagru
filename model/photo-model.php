@@ -1,9 +1,10 @@
 <?php
 
-function getCountImg($pdo)
+function getValidImg($pdo, $imgId)
 {
-    $stmt = $pdo->query('SELECT img_id FROM Photo');
-    return $stmt->rowCount();
+    $stmt = $pdo->prepare('SELECT img_id FROM Photo WHERE img_id = :iid');
+    $stmt->execute(array(':iid' => $imgId));
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function getView($pdo, $imgId)

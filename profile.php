@@ -36,11 +36,12 @@ if (checkSignIn()) {
                     } else
                         $photos = getPosts($pdo, $limit, $offset);
                     $photos->execute(array(':uid' => $row['user_id']));
-                } else
-                {
-                    header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
-                    // return;
-                }
+                } 
+                // else
+                // {
+                //     header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
+                //     return;
+                // }
             }
 
             $favorites = getCountFavorites($pdo, $row['user_id']);
@@ -56,11 +57,12 @@ if (checkSignIn()) {
                     } else
                         $photo_likes = getFavorites($pdo, $limit, $offset);
                     $photo_likes->execute(array(':uid' => $row['user_id']));
-                } else
-                {
-                    header('Location: profile.php?user=' . $_GET['user'] . '&page=1&favorites');
-                    // return;
                 }
+                //  else
+                // {
+                //     header('Location: profile.php?user=' . $_GET['user'] . '&page=1&favorites');
+                //     return;
+                // }
             }
 
             require_once "components/header.php";

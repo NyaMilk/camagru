@@ -8,8 +8,7 @@ require_once 'model/photo-model.php';
 flashMessages();
 
 if (checkSignIn()) {
-    $count_img = getCountImg($pdo);
-    if (isset($_GET['img']) && $_GET['img'] > 0 && $_GET['img'] <= $count_img) {
+    if (isset($_GET['img']) && getValidImg($pdo, $_GET['img'])) {
         $view = getView($pdo, $_GET['img']);
         if (empty($view))
             setView($pdo, $_GET['img']);
