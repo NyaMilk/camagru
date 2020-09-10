@@ -19,7 +19,7 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 
 $offset = 9;
 $pages = getPages($pdo, $offset);
-if ($pages != 0) {
+if ($pages) {
     if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages) {
         $limit = $offset * $_GET['page'];
         if ($_GET['sort'] == 'popular')
@@ -29,12 +29,20 @@ if ($pages != 0) {
         else
             $type = null;
         $stmt = getSortImg($pdo, $type, $limit, $offset);
-
-        require_once "components/header.php";
-        require_once "components/gallery-view.php";
-        $pageName = 'gallery';
-        paginationList($pageName, $pages);
-        require_once "components/footer.php";
     } else
         header('Location: gallery.php?sort=all&page=1');
 }
+
+if (
+    !isset($_GET['sort']) || (isset($_GET['sort']) && $_GET['sort'] != 'all' && $_GET['sort'] != 'popular' && $_GET['sort'] != 'new')
+    || (isset($_GET['page']) && ($_GET['page'] < 0 || $_GET['page'] > $pages + 1))
+) {
+    header('Location: gallery.php?sort=all&page=1');
+    return;
+}
+
+require_once "components/header.php";
+require_once "components/gallery-view.php";
+$pageName = 'gallery';
+paginationList($pageName, $pages);
+require_once "components/footer.php";

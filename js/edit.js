@@ -1,7 +1,7 @@
 "use strict";
 
 (function () {
-    let new_avatar = document.getElementById('new-avatar');
+    let new_avatar = document.getElementById("new-avatar");
     let save_btn = document.querySelector(".btn-save");
 
     function changeSave() {
@@ -17,7 +17,7 @@
 
     document.querySelector("input[name='notific']").addEventListener("click", changeSave, false);
 
-    new_avatar.addEventListener('change', function () {
+    new_avatar.addEventListener("change", function () {
         if (this.files && this.files[0]) {
             if (!this.files[0].type.match("image*")) {
                 alert("Wrong type file");

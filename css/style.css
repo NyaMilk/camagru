@@ -300,17 +300,17 @@ a {
 
 /* gallery.php */
 
-.gallery form {
+.gallery__form {
     display: block;
     padding: 25px 0;
     text-align: center;
 }
 
-.gallery input {
+.gallery__form input {
     display: none;
 }
 
-.gallery label {
+.gallery__form label {
     cursor: pointer;
     padding-right: 40px;
     color: #555;
@@ -318,12 +318,16 @@ a {
     font-weight: 700;
 }
 
-.gallery label:last-child {
+.gallery__form label:last-child {
     padding-right: 0;
 }
 
-.gallery label:hover {
+.gallery__form label:hover {
     color: #999;
+}
+
+.gallery__form .gallery__form-active {
+    color: #49d1ca;
 }
 
 .gallery_list {

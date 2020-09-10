@@ -1,6 +1,6 @@
 <section class="gallery align_footer">
     <div class="container">
-        <form method="post" name="gallery_sort">
+        <form method="post" name="gallery_sort" class="gallery__form">
             <label>All<input type="radio" name="sort" value="all"></label>
             <label>Popular<input type="radio" name="sort" value="popular"></label>
             <label>Newest<input type="radio" name="sort" value="new"></label>
@@ -8,7 +8,6 @@
 
         <div class="gallery_list">
             <?php
-            // if ($stmt->rowCount() == 0)
             if ($pages == 0)
                 echo '<p class="count-message">No photos t.t</p>';
             else {

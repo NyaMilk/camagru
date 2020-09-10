@@ -20,10 +20,10 @@ if (checkSignIn()) {
             if (!$likes['likes'])
                 $likes['likes'] = 0;
 
-            $posts = getCountPosts($pdo, $row['user_id']);
             $offset = 6;
+            $posts = getCountPosts($pdo, $row['user_id']);
             $pages = ceil(($posts + 1) / $offset);
-            if ($posts) {
+            if ($posts && isset($_GET['posts'])) {
                 if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages) {
                     $limit = $offset * $_GET['page'];
                     if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
@@ -36,17 +36,15 @@ if (checkSignIn()) {
                     } else
                         $photos = getPosts($pdo, $limit, $offset);
                     $photos->execute(array(':uid' => $row['user_id']));
-                } 
-                // else
-                // {
-                //     header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
-                //     return;
-                // }
+                } else {
+                    header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
+                    // return;
+                }
             }
 
             $favorites = getCountFavorites($pdo, $row['user_id']);
             $pages_likes = ceil($favorites / $offset);
-            if ($favorites) {
+            if ($favorites && isset($_GET['favorites'])) {
                 if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages_likes) {
                     $limit = $offset * $_GET['page'];
                     if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) {
@@ -57,12 +55,21 @@ if (checkSignIn()) {
                     } else
                         $photo_likes = getFavorites($pdo, $limit, $offset);
                     $photo_likes->execute(array(':uid' => $row['user_id']));
+                } else {
+                    header('Location: profile.php?user=' . $_GET['user'] . '&page=1&favorites');
+                    // return;
                 }
-                //  else
-                // {
-                //     header('Location: profile.php?user=' . $_GET['user'] . '&page=1&favorites');
-                //     return;
-                // }
+            }
+
+            if (isset($_GET['favorites']))
+                $pages = $pages_likes + 1;
+                // echo'<script>alert('.$pages.')</script>';
+            if (isset($_GET['page']) && ($_GET['page'] <= 0 || $_GET['page'] > $pages || !is_numeric($_GET['page']))) {
+            // if (isset($_GET['page']) && ($_GET['page'] <= 0 || $_GET['page'] > $pages || !is_numeric($_GET['page']))) {
+                // header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
+                
+                header('Location: add.php');
+                // return;
             }
 
             require_once "components/header.php";
@@ -72,7 +79,7 @@ if (checkSignIn()) {
                 $text = '&posts';
             } elseif (isset($_GET['favorites'])) {
                 $text = '&favorites';
-                $pages = $pages_likes;
+                // $pages = $pages_likes;
             }
             paginationList($page, $pages, $text);
             require_once "components/footer.php";
@@ -81,7 +88,8 @@ if (checkSignIn()) {
             header('Location: gallery.php?sort=all&page=1');
             // return;
         }
-    } else
+    } else {
         header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
-    // return;
+        // return;
+    }
 }
