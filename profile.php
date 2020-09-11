@@ -63,12 +63,8 @@ if (checkSignIn()) {
 
             if (isset($_GET['favorites']))
                 $pages = $pages_likes + 1;
-                // echo'<script>alert('.$pages.')</script>';
             if (isset($_GET['page']) && ($_GET['page'] <= 0 || $_GET['page'] > $pages || !is_numeric($_GET['page']))) {
-            // if (isset($_GET['page']) && ($_GET['page'] <= 0 || $_GET['page'] > $pages || !is_numeric($_GET['page']))) {
-                // header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
-                
-                header('Location: add.php');
+                header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
                 // return;
             }
 

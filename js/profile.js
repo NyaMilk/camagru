@@ -1,11 +1,13 @@
 "use strict";
 
 (function () {
-    let page = window.location.href.split('&');
+    let page = new URL(window.location.href).searchParams.keys();
+    let nav = document.querySelectorAll('.profile-nav a');
+    let display = 0;
+    
+    for (let key of page)
+        if (key == 'favorites')
+            display = 1;
 
-    if (page[2] == 'posts') {
-        document.querySelector('.profile-nav a').classList.add('profile-nav-active');
-    } else {
-        document.querySelector('.profile-nav a:last-child').classList.add('profile-nav-active');
-    };
+    nav[display].classList.add('profile-nav-active');
 })();

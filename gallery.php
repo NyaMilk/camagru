@@ -33,10 +33,11 @@ if ($pages) {
         header('Location: gallery.php?sort=all&page=1');
 }
 
-if (
-    !isset($_GET['sort']) || (isset($_GET['sort']) && $_GET['sort'] != 'all' && $_GET['sort'] != 'popular' && $_GET['sort'] != 'new')
-    || (isset($_GET['page']) && ($_GET['page'] < 0 || $_GET['page'] > $pages + 1))
-) {
+$bord = $pages;
+if ($pages == 0)
+    $bord = 1;
+if (!isset($_GET['sort']) || (isset($_GET['sort']) && $_GET['sort'] != 'all' && $_GET['sort'] != 'popular' && $_GET['sort'] != 'new')
+   || (isset($_GET['page']) && ($_GET['page'] < 0 || $_GET['page'] > $bord))) {
     header('Location: gallery.php?sort=all&page=1');
     return;
 }
