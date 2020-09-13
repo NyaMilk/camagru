@@ -110,59 +110,13 @@ INSERT INTO Filters (path) VALUES
 
 
 INSERT INTO Users (name, email, password, confirm) VALUES
-('admin', 'admin@localhost.ru', SHA2('XyZzy12*_123', 512), 'yes'),
-('kusmene', 'kus@mene.ru', SHA2('XyZzy12*_456', 512), 'yes'),
-('kitik', 'kiti@test.com', SHA2('XyZzy12*_789', 512), 'no');
-
-UPDATE Users SET status='admin' WHERE name='admin';
+('mgrass', 'amilyukovadev@gmail.com', SHA2('XyZzy12*_123', 512), 'yes');
 
 INSERT INTO Photo (user_id, path) VALUES
-('2', 'img/test/test2.jpg'),
-('2', 'img/test/test3.jpg'),
-('2', 'img/test/test4.jpg'),
-('2', 'img/test/test2.jpg'),
-('2', 'img/test/test3.jpg'),
-('2', 'img/test/test4.jpg'),
-('2', 'img/test/test2.jpg'),
-('2', 'img/test/test3.jpg'),
-('2', 'img/test/test4.jpg'),
-('3', 'img/test/test5.jpg'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test5.jpg'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test5.jpg'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test7.jpg'),
-('3', 'img/test/test8.jpg'),
-('3', 'img/test/test9.png'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test7.jpg'),
-('3', 'img/test/test8.jpg'),
-('3', 'img/test/test9.png'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test7.jpg'),
-('3', 'img/test/test8.jpg'),
-('3', 'img/test/test9.png'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test7.jpg'),
-('3', 'img/test/test8.jpg'),
-('3', 'img/test/test9.png'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test7.jpg'),
-('3', 'img/test/test8.jpg'),
-('3', 'img/test/test9.png'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test7.jpg'),
-('3', 'img/test/test8.jpg'),
-('3', 'img/test/test9.png'),
-('3', 'img/test/test6.jpg'),
-('3', 'img/test/test7.jpg'),
-('3', 'img/test/test8.jpg'),
 ('3', 'img/test/test9.png');
 
-INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/th.jpg');
-INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/tw.jpg');
+-- INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/th.jpg');
+-- INSERT INTO Photo (user_id, path) VALUES ('1', 'img/test/tw.jpg');
 
 -- INSERT INTO Users (name, email, password, confirm) VALUES ('kus', 'nyamilk@yandex.ru', SHA2('XyZzy12*_1', 512), 'yes');
--- INSERT INTO Users (name, email, password, confirm) VALUES ('test', 'test@test', SHA2('XyZzy12*_1', 512), 'no');
+-- INSERT INTO Users (name, email, password, confirm) VALUES ('testtest', 'test@test', SHA2('XyZzy12*_1', 512), 'no');

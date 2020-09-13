@@ -49,7 +49,7 @@
                 console.log("An error occurred: " + err);
             });
 
-        video.addEventListener('canplay', function (ev) {
+        video.addEventListener('canplay', function () {
             if (!streaming) {
                 height = video.videoHeight / (video.videoWidth / width);
                 if (isNaN(height)) {
@@ -65,13 +65,13 @@
             }
         }, false);
 
-        shoot.addEventListener('click', function (ev) {
+        shoot.addEventListener('click', function (event) {
             takePicture();
             save_btn.disabled = false;
             save_btn.style.background = "#49D1CA";
             save_btn.style.borderColor = "#49D1CA";
             save_btn.style.cursor = "pointer";
-            ev.preventDefault();
+            event.preventDefault();
         }, false);
         shoot.removeAttribute('disabled');
         clearphoto();
@@ -125,10 +125,10 @@
         }
     }
 
-    let btn = document.getElementById('startbutton');
-    let btn2 = document.getElementById('file-upload');
-    btn.addEventListener('click', startup, false);
-    btn2.addEventListener('click', vidOff, false);
+    let startBtn = document.getElementById('startbutton');
+    let upBtn = document.getElementById('file-upload');
+    startBtn.addEventListener('click', startup, false);
+    upBtn.addEventListener('click', vidOff, false);
 
     let filters = ['blur(5px)',
         'grayscale(100%)',
@@ -223,15 +223,15 @@
         return false;
     }
 
-    document.getElementById('preview').addEventListener('click', function (e) {
-        if (!snapchat['isClicked'] && inArrayStickers(e.offsetX, e.offsetY)) {
+    document.getElementById('preview').addEventListener('click', function (event) {
+        if (!snapchat['isClicked'] && inArrayStickers(event.offsetX, event.offsetY)) {
             snapchat['isClicked'] = true;
         }
         else {
             for (let el of snapchat['stickers']) {
                 if (el.isActive) {
-                    el.x = e.offsetX - sticker_width / 2;
-                    el.y = e.offsetY - sticker_height / 2;
+                    el.x = event.offsetX - sticker_width / 2;
+                    el.y = event.offsetY - sticker_height / 2;
                     el.isActive = false;
                 }
             }
@@ -256,12 +256,12 @@
             clear();
             let reader = new FileReader();
             save_btn.removeAttribute("disabled");
-            reader.onload = function (e) {
+            reader.onload = function (event) {
                 clear();
                 document.getElementById('preview')
-                    .setAttribute('src', e.target.result);
+                    .setAttribute('src', event.target.result);
                 document.getElementById('origin')
-                    .setAttribute('src', e.target.result);
+                    .setAttribute('src', event.target.result);
                 save.value = preview.src;
                 save_btn.disabled = false;
                 save_btn.style.background = "#49D1CA";

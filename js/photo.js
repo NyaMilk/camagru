@@ -78,7 +78,7 @@
         xhttp.send(param);
     }, false);
 
-    text.addEventListener("keyup", function (event) {
+    text.addEventListener("keyup", function () {
         if (this.value.length > 80 || this.value.length == 0) {
             btn.disabled = true;
             btn.style.background = "#E6E7ED";

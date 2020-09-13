@@ -1,6 +1,6 @@
 <?php
 
-function getEmail($pdo, $email)
+function findEmail($pdo, $email)
 {
     $stmt = $pdo->prepare('SELECT name, email FROM Users WHERE email = :em');
     $stmt->execute(array(':em' => $email));

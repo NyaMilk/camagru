@@ -15,7 +15,7 @@ flashMessages();
 if (isset($_POST['submit'])) {
     if ($_POST['submit'] == 'Sign In') {
         if (strlen($_POST['username']) == 0 || strlen($_POST['pass']) == 0) {
-            $_SESSION['error'] = 'Username and password are required';
+            $_SESSION['error'] = 'Username and password are required.';
             header('Location: index.php');
             return;
         }
@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
             header('Location: gallery.php?sort=all&page=1');
             return;
         } else {
-            $_SESSION['error'] = 'Incorrect username or password';
+            $_SESSION['error'] = 'Incorrect username or password.';
             header('Location: index.php');
             return;
         }
@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 
     if ($_POST['submit'] == 'Sign Up') {
         if (strlen($_POST['username_up']) == 0 || strlen($_POST['email_up']) == 0 || strlen($_POST['pass_up']) == 0 || strlen($_POST['repass_up']) == 0) {
-            $_SESSION['error'] = 'All values are required';
+            $_SESSION['error'] = 'All values are required.';
             header('Location: index.php');
             return;
         }
@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
             return;
         $hash = md5($_POST['username_up'] . time());
         addUser($pdo, trim($_POST['username_up']), trim($_POST['email_up']), hash('sha512', $salt . $_POST['pass_up']), $hash);
-        $_SESSION['success'] = 'Profile added. You need to confirm the email address.';
+        $_SESSION['success'] = 'Profile added. Please verify email address to complete your registration.';
         sendNotification('email_up', $hash, $page);
         header('Location: index.php');
         return;

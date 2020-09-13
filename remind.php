@@ -11,7 +11,7 @@ require_once 'util.php';
 require_once 'model/remind-model.php';
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'Send') {
-    $row = getEmail($pdo, trim($_POST['remind-email']));
+    $row = findEmail($pdo, trim($_POST['remind-email']));
     if ($row == false) {
         $_SESSION['error'] = 'Email address has not found';
         header('Location: remind.php');
@@ -38,7 +38,7 @@ if (isset($_GET['name']))
     require_once "components/reset-pass.php";
 else
     require_once "components/remind-page.php";
-    
+
 require_once "components/footer.php";
 
 flashMessages();

@@ -19,6 +19,16 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
 
 $offset = 9;
 $pages = getPages($pdo, $offset);
+
+$bord = $pages;
+if ($pages == 0)
+    $bord = 1;
+if (!isset($_GET['sort']) || ($_GET['sort'] != 'all' && $_GET['sort'] != 'popular' && $_GET['sort'] != 'new')
+    || ($_GET['page'] <= 0 || $_GET['page'] > $bord)) {
+    header('Location: gallery.php?sort=all&page=1');
+    return;
+}
+
 if ($pages) {
     if (isset($_GET['page']) && $_GET['page'] > 0 && $_GET['page'] <= $pages) {
         $limit = $offset * $_GET['page'];
@@ -33,14 +43,7 @@ if ($pages) {
         header('Location: gallery.php?sort=all&page=1');
 }
 
-$bord = $pages;
-if ($pages == 0)
-    $bord = 1;
-if (!isset($_GET['sort']) || (isset($_GET['sort']) && $_GET['sort'] != 'all' && $_GET['sort'] != 'popular' && $_GET['sort'] != 'new')
-   || (isset($_GET['page']) && ($_GET['page'] < 0 || $_GET['page'] > $bord))) {
-    header('Location: gallery.php?sort=all&page=1');
-    return;
-}
+
 
 require_once "components/header.php";
 require_once "components/gallery-view.php";

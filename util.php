@@ -21,12 +21,12 @@ function checkSignIn()
     if (!isset($_SESSION['name'])) {
         $_SESSION['error'] = 'You must sign in the site.';
         header('Location: index.php');
-        // return false;
+        return false;
     }
     if (isset($_SESSION['confirm']) && $_SESSION['confirm'] == 'no') {
         $_SESSION['error'] = 'Confirm your email address.';
         header('Location: gallery.php?sort=all&page=1');
-        // return false;
+        return false;
     }
     return true;
 }
@@ -114,7 +114,7 @@ function checkPassword($pdo, $page)
         return false;
     }
 
-    if (!validateInputPass($_POST['pass_up'])) {
+    if (!validateInputPass($_POST['repass_up'])) {
         $_SESSION['error'] = 'Password must be at least 6 characters in length and must include at least one upper case letter, one number, and one special character.';
         header('Location: ' . $page);
         return false;

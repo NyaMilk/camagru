@@ -12,7 +12,8 @@
                 echo '<p class="count-message">No photos t.t</p>';
             else {
                 for ($i = 1; $i <= $offset; $i++) {
-                    if ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($row !== false)
                         echo '<a class="photo__link" href="photo.php?img=' . htmlentities($row['img_id']) . '">' . '<img class="gallery_item" src="' . htmlentities($row['path']) . '" ></a>' . "\n";
                 }
             }

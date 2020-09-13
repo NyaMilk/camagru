@@ -23,8 +23,6 @@ if (checkSignIn()) {
                 else
                     $notific = 'no';
 
-                changeNotific($pdo, $notific, $_SESSION['user_id']);
-
                 if (strlen($_POST['username_up']) == 0 || strlen($_POST['email_up']) == 0) {
                     $_SESSION['error'] = 'Username and email are required';
                     header('Location: edit.php?user=' . $row['name']);
@@ -33,7 +31,6 @@ if (checkSignIn()) {
 
                 if ($_POST['username_up'] != $row['name']) {
                     checkUserName($pdo, $page);
-                    // $row['name'] = $_POST['username_up'];
                 }
                 if ($_POST['email_up'] != $row['email'])
                     checkEmail($pdo, $page);
@@ -43,6 +40,7 @@ if (checkSignIn()) {
                     if (!isset($_SESSION['error']))
                         changePass($pdo, hash('sha512', $salt . $_POST['repass_up']), $_SESSION['user_id']);
                 }
+                
                 if (!isset($_SESSION['error'])) {
                     updateAll($pdo, trim($_POST['username_up']), trim($_POST['email_up']), trim($_POST['description']), $_SESSION['user_id']);
                     $_SESSION['name'] = $_POST['username_up'];
@@ -62,14 +60,22 @@ if (checkSignIn()) {
                         if (isset($row['avatar']) && $row['avatar'] && $row['avatar'] != 'img/icon/user.svg')
                             unlink($row['avatar']);
                     }
+                    changeNotific($pdo, $notific, $_SESSION['user_id']);
                     header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
+                    return;
                 }
             }
             if (isset($_POST['submit']) && $_POST['submit'] == 'Cancel')
+            {
                 header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
+                return;
+            }
         }
     } else
+    {
         header('Location: index.php');
+        return;
+    }
 
     require_once 'components/header.php';
     require_once 'components/edit-view.php';

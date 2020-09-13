@@ -26,6 +26,7 @@ if (checkSignIn()) {
 
         addPhoto($pdo, $_SESSION['user_id'], $new_src, htmlentities($_POST['text_photo']));
         header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
+        return;
     }
 
     $stmt_filters = getTools($pdo, "Filters");
