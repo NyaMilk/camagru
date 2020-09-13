@@ -120,13 +120,13 @@ function checkPassword($pdo, $page)
         return false;
     }
 
-    if ($page == 'index.php') {
+    if ($page == 'index.php' || strpos($page, 'remind.php') !== false) {
         if ($_POST['pass_up'] != $_POST['repass_up']) {
             $_SESSION['error'] = 'Password do not match';
             header('Location: ' . $page);
             return false;
         }
-    } else {
+    } else if ($page == 'edit.php') {
         $salt = 'XyZzy12*_';
         if (!getPassword($pdo, hash('sha512', $salt . $_POST['pass_up']))) {
             $_SESSION['error'] = 'Wrong password';
@@ -167,7 +167,7 @@ function paginationList($pageName, $pages, $text = null)
 
     echo '<div class="pagination">';
     if ($pages > 1 && isset($_GET['page'])) {
-        if (!is_numeric($_GET['page'])) /* повторение, подумать - ворнинг */
+        if (!is_numeric($_GET['page']))
             $_GET['page'] = 1;
         if ($_GET['page'] == 1) {
             $count = $_GET['page'] + 2;
@@ -215,12 +215,12 @@ function sendNotification($value, $elem, $page)
     if ($page == 'index.php') {
         $email = $_POST[$value];
         $subject = 'Confirm email address';
-        $message = '<p>To complete the sign-up process, please follow the <a href="http://localhost:8080/components/confirm.php?hash=' . $elem . '">link.</a></p>';
+        $message = '<p>To complete the sign-up process, please follow the <a href="http://localhost:8080/confirm.php?hash=' . $elem . '">link.</a></p>';
     } elseif ($page == 'remind.php') {
         $email = $value;
         $subject = 'Remind username and password';
-        $message = '<p>Your username: ' . htmlentities($elem) . '.</p>';
-        $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($elem) . '">link.</a></p>';
+        $message = '<p>Your username: ' . htmlentities($elem[0]) . '.</p>';
+        $message .= '<p>To reset your password please follow the <a href="http://localhost:8080/remind.php?name=' . htmlentities($elem[0]) . '&uniq=' . md5($elem[1]) . '">link.</a></p>';
     } elseif ($page == 'comments.php') {
         echo $elem['0'];
         $email = $value;

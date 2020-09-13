@@ -17,16 +17,25 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'Send') {
         header('Location: remind.php');
         return;
     }
+    $arr = array($row['name'], $_POST['remind-email']);
     $page = 'remind.php';
-    sendNotification($row['email'], $row['name'], $page);
-    $_SESSION['success'] = 'Link to change pass has been sent to your mail.'; /* написать нормально */
+    sendNotification($row['email'], $arr, $page);
+    $_SESSION['success'] = 'Link to change pass has been sent to your mail.';
     header('Location: index.php');
     return;
 }
 
 if (isset($_POST['submit']) && $_POST['submit'] == 'Set new password') {
-    /* прописать проверки как в index / проверки вынести в util */
-    changePass($pdo, hash('sha512', $salt . $_POST['reset-pass']), $_GET['name']);
+    $row = findEmailByName($pdo, trim($_GET['name']));
+    if ((md5($row['email']) != $_GET['uniq']) || !$row || !isset($_GET['name']) || !isset($_GET['uniq'])) {
+        $_SESSION['error'] = "Wrong name to change password.";
+        header('Location: remind.php');
+        return;
+    }
+    $page = 'remind.php?name=' . $_GET['name'] . '&uniq=' . $_GET['uniq'];
+    if (!checkPassword($pdo, $page))
+        return;
+    changePass($pdo, hash('sha512', $salt . $_POST['repass_up']), $_GET['name']);
     $_SESSION['success'] = 'Password has been changed successfully!';
     header('Location: index.php');
     return;

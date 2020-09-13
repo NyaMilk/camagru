@@ -31,7 +31,8 @@ if (checkSignIn()) {
                 $pages = $pages_likes + 1;
             if ((isset($_GET['page']) && ($_GET['page'] <= 0 || $_GET['page'] > $pages || !is_numeric($_GET['page'])))
                 || ((isset($_GET['posts']) && strlen($_GET['posts']) != 0)
-                || (isset($_GET['favorites']) && strlen($_GET['favorites']) != 0))) {
+                    || (isset($_GET['favorites']) && strlen($_GET['favorites']) != 0))
+            ) {
                 header('Location: profile.php?user=' . $_GET['user'] . '&page=1&posts');
                 return;
             }

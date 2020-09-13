@@ -7,7 +7,7 @@
             <div class="profile-data">
                 <h2><?= htmlentities($row['name']) ?></h2>
                 <?php
-                if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name']) /* проверить*/
+                if (isset($_SESSION['name']) && $_SESSION['name'] == $row['name'])
                     echo '<a href="edit.php?user=' . htmlentities($row['name']) . '" class="profile-btn btn-blue">Edit profile</a>';
                 ?>
                 <table>
@@ -42,7 +42,6 @@
                             $i++;
                             $flag = 0;
                         }
-                        // echo '<a class="profile-photos__link" href="photo.php?img=' . htmlentities($photo['img_id']) . '"><img class="profile-photos__link-img" src="' . htmlentities($photo['path']) . '" >';
                         echo '<a class="profile-photos__link" href="photo.php?img=' . htmlentities($photo['img_id']) . '">';
                         echo '<img class="profile-photos__link-img" src="' . htmlentities($photo['path']) . '" >';
                         echo '</a>' . "\n";
@@ -58,7 +57,6 @@
                             echo '<input type="hidden" name="img_id" value="' . htmlentities($photo['img_id']) . '">';
                             echo '<input type="submit" name="delete" class="btn-blue" value="Delete">';
                             echo '<input type="submit" name="close" class="btn-gray" value="Close">';
-                            // echo '<a href="" class="close" title="Close">Close</a>'
                             echo '</form>';
                             echo '</div>';
                             echo '</div>';

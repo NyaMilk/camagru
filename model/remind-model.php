@@ -7,6 +7,13 @@ function findEmail($pdo, $email)
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+function findEmailByName($pdo, $name)
+{
+    $stmt = $pdo->prepare('SELECT email FROM Users WHERE name = :nm');
+    $stmt->execute(array(':nm' => $name));
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 function changePass($pdo, $pass, $login)
 {
     $stmt = $pdo->prepare('UPDATE Users SET password = :ps WHERE name = :nm');

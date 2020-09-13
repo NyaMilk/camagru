@@ -16,7 +16,6 @@
 
                 <div>
                     <p>Share:</p>
-                    <!-- esc_url( sprintf( 'http://www.twitter.com?status=%s', urlencode( $message ) ) ); -->
                     <a class="btn btn-default btn-lg" target="_blank" title="facebook" href="http://www.facebook.com/sharer.php?u=http://localhost:8080/photo.php?img=<?= $_GET['img'] ?>&text=True%20story">
                         <img src="../img/icon/facebook.svg" alt="fb">
                     </a>
@@ -49,7 +48,7 @@
                         <span class="span_comment">No more than 80 characters</span>
                         <textarea id="text" name="text_comment" rows="1" placeholder="Leave a comment"></textarea>
                     </div>
-                    
+
                     <button class="btn-blue btn-save" type="submit">Send</button>
                 </div>
             </div>

@@ -40,7 +40,7 @@ if (checkSignIn()) {
                     if (!isset($_SESSION['error']))
                         changePass($pdo, hash('sha512', $salt . $_POST['repass_up']), $_SESSION['user_id']);
                 }
-                
+
                 if (!isset($_SESSION['error'])) {
                     updateAll($pdo, trim($_POST['username_up']), trim($_POST['email_up']), trim($_POST['description']), $_SESSION['user_id']);
                     $_SESSION['name'] = $_POST['username_up'];
@@ -65,14 +65,12 @@ if (checkSignIn()) {
                     return;
                 }
             }
-            if (isset($_POST['submit']) && $_POST['submit'] == 'Cancel')
-            {
+            if (isset($_POST['submit']) && $_POST['submit'] == 'Cancel') {
                 header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
                 return;
             }
         }
-    } else
-    {
+    } else {
         header('Location: index.php');
         return;
     }

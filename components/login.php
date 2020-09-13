@@ -9,7 +9,7 @@
 						<div class="login_group">
 							<input type="text" name="username" placeholder="Username">
 							<input type="password" name="pass" placeholder="Password">
-							<input id="s-in" type="submit" name="submit" value="Sign In">
+							<input type="submit" name="submit" value="Sign In">
 						</div>
 						<a href="remind.php">Forgot username or password?</a>
 					</div>
@@ -21,7 +21,7 @@
 							<input type="email" name="email_up" placeholder="Email">
 							<input type="password" name="pass_up" placeholder="Password">
 							<input type="password" name="repass_up" placeholder="Repeat Password">
-							<input id="s-up" type="submit" name="submit" value="Sign Up">
+							<input type="submit" name="submit" value="Sign Up">
 						</div>
 					</div>
 				</form>

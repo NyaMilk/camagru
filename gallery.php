@@ -43,8 +43,6 @@ if ($pages) {
         header('Location: gallery.php?sort=all&page=1');
 }
 
-
-
 require_once "components/header.php";
 require_once "components/gallery-view.php";
 $pageName = 'gallery';

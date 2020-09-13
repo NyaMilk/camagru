@@ -15,7 +15,7 @@
         <div class="container">
             <div>
                 <a href="index.php">
-                    <h1>CamaGuru</h1>
+                    <h1>CamaGru</h1>
                 </a>
             </div>
             <nav class="header-navigation">

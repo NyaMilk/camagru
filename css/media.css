@@ -50,6 +50,10 @@
     .page-img__comments-set__form .span_comment {
         left: 15%
     }
+    .profile-addphoto
+    {
+        margin-top: 30%;
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 989px) {
