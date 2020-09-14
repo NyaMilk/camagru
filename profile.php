@@ -9,7 +9,11 @@ if (checkSignIn()) {
     if (isset($_GET['user']) && isset($_GET['page']) && (isset($_GET['posts']) || isset($_GET['favorites']))) {
         if (isset($_POST['delete'])) {
             if (isset($_POST['img_id']) && $_POST['img_id'] && $_SESSION['user_id']) {
-                delPhoto($pdo, $_POST['img_id']);
+                $path = getImgPath($pdo, $_POST['img_id']);
+                if (delPhoto($pdo, $_POST['img_id'])) {
+                    if ($path['path'])
+                        unlink($path['path']);
+                }
                 header('Location: profile.php?user=' . $_SESSION['name'] . '&page=1&posts');
             }
         }

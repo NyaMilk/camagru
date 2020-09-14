@@ -14,6 +14,8 @@ if (checkSignIn()) {
         if ($row !== false) {
             if ($row['notification'] == 'yes')
                 $checked = 'checked';
+            else
+                $checked = '';
 
             if (isset($_POST['submit']) && $_POST['submit'] == 'Save') {
                 $page = 'edit.php?user=' . $row['name'];
@@ -34,7 +36,10 @@ if (checkSignIn()) {
                 }
                 if ($_POST['email_up'] != $row['email'])
                     checkEmail($pdo, $page);
-                checkLenInput('description', $page, 'Description');
+                if (!checkLenInput('description', 'Description')) {
+                    header('Location: ' . $page);
+                    return;
+                }
                 if (strlen($_POST['pass_up']) > 0 || strlen($_POST['repass_up']) > 0) {
                     checkPassword($pdo, $page);
                     if (!isset($_SESSION['error']))

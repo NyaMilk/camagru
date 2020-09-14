@@ -44,6 +44,9 @@
     .page_info_user {
         width: 415px;
     }
+    .page_info_user span {
+        width: 375px;
+    }
     .page-img__photo-description {
         width: 400px;
     }
@@ -53,6 +56,10 @@
     .profile-addphoto
     {
         margin-top: 30%;
+    }
+    .profile-data h2,
+    .profile-data span {
+        width: 495px;
     }
 }
 
@@ -117,6 +124,9 @@
     .page_info_user {
         width: 315px;
     }
+    .page_info_user span {
+        width: 275px;
+    }
     .page-img__comments-set__form .span_comment {
         left: 9%;
     }
@@ -125,6 +135,13 @@
     }
     .page-img__photo-description {
         width: 300px;
+    }
+    .profile-data h2 {
+        width: 295px;
+    }
+    .profile-data span
+    {
+        width: 450px;
     }
 }
 
@@ -185,6 +202,10 @@
     .edit-page__form-img {
         width: 440px;
     }
+    .profile-data h2,
+    .profile-data span {
+        width: 245px;
+    }
     /* photo.php */
     .page-img .container {
         flex-direction: column;
@@ -216,6 +237,9 @@
     }
     .page_info_user {
         width: 355px;
+    }
+    .page_info_user span {
+        width: 320px;
     }
     .page-img__comments-set__form .span_comment {
         left: 15%;
@@ -370,6 +394,9 @@
     .page_info_user {
         width: 210px;
     }
+    .page_info_user span {
+        width: 170px;
+    }
     .page-img__photo-user p {
         width: 300px;
     }
@@ -401,6 +428,10 @@
     }
     .photo-edit .photo-dsc .span_photo {
         left: 30px;
+    }
+    .profile-data h2,
+    .profile-data span {
+        width: 245px;
     }
 }
 

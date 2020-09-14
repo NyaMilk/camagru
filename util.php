@@ -126,7 +126,7 @@ function checkPassword($pdo, $page)
             header('Location: ' . $page);
             return false;
         }
-    } else if ($page == 'edit.php') {
+    } else {
         $salt = 'XyZzy12*_';
         if (!getPassword($pdo, hash('sha512', $salt . $_POST['pass_up']))) {
             $_SESSION['error'] = 'Wrong password';
@@ -227,7 +227,7 @@ function sendNotification($value, $elem, $page)
         $subject = 'New comment';
         $message = '<p>You have new comment on <a href="http://localhost:8080/photo.php?img=' . $elem[1] . '">photo.</a></p>';
         $message .= '<blockquote><p>' . htmlentities($elem[0]) . '</p>';
-        $message .= '<cite>avtor: ' . $_SESSION['name'] . '</cite></blockquote>';
+        $message .= '<cite>author: ' . $_SESSION['name'] . '</cite></blockquote>';
     }
     mail($email, $subject, $message, $headers);
 }

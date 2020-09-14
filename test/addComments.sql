@@ -8,7 +8,7 @@ BEGIN
     SET COUNTER = 0;
 
     WHILE COUNTER < 1000 DO
-        INSERT INTO Comment (user_id, img_id, comment) VALUES (1, 2, COUNTER);
+        INSERT INTO Comment (user_id, img_id, comment) VALUES (1, 20005, COUNTER);
         SET COUNTER = COUNTER + 1;
     END WHILE;
 END //

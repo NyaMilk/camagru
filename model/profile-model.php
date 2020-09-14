@@ -3,7 +3,14 @@
 function delPhoto($pdo, $imageId)
 {
     $stmt = $pdo->prepare('DELETE FROM Photo WHERE img_id = :iid');
+    return $stmt->execute(array(':iid' => $imageId));
+}
+
+function getImgPath($pdo, $imageId)
+{
+    $stmt = $pdo->prepare('SELECT path FROM Photo WHERE img_id = :iid');
     $stmt->execute(array(':iid' => $imageId));
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 function getUser($pdo, $login)

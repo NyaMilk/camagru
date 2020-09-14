@@ -3,7 +3,6 @@
 (function () {
     let width = 900;
     let height = 0;
-
     let streaming = false;
     let isInited = false;
 
